@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Written Journey</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0a12;
+      min-height: 100vh;
+      font-family: Georgia, 'Times New Roman', serif;
+      overflow-x: hidden;
+      color: #e8e4d9;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+
+    /* Sanskrit/Tamil inspired header */
+    .header {
+      text-align: center;
+      margin-bottom: 80px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      color: #c9a227;
+      margin-bottom: 20px;
+    }
+
+    .header .sanskrit {
+      font-size: 1.1rem;
+      color: #8b7355;
+      font-style: italic;
+      letter-spacing: 0.1em;
+    }
+
+    /* The river of time */
+    .river-section {
+      position: relative;
+      height: 400px;
+      margin: 60px 0;
+      overflow: hidden;
+    }
+
+    .river {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .river svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .river-path {
+      fill: none;
+      stroke: url(#riverGradient);
+      stroke-width: 3;
+      stroke-linecap: round;
+      animation: flowPath 8s ease-in-out infinite;
+    }
+
+    @keyframes flowPath {
+      0%, 100% { stroke-dashoffset: 0; }
+      50% { stroke-dashoffset: 50; }
+    }
+
+    /* Life moments on the river */
+    .moment {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #f4d03f, #c9a227);
+      box-shadow: 0 0 20px rgba(201, 162, 39, 0.5);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .moment::after {
+      content: attr(data-label);
+      position: absolute;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: 0.75rem;
+      color: #8b7355;
+      opacity: 0.8;
+    }
+
+    .moment:nth-child(1) { left: 10%; top: 60%; animation-delay: 0s; }
+    .moment:nth-child(2) { left: 30%; top: 45%; animation-delay: 1s; }
+    .moment:nth-child(3) { left: 50%; top: 55%; animation-delay: 2s; }
+    .moment:nth-child(4) { left: 70%; top: 40%; animation-delay: 3s; }
+    .moment:nth-child(5) { left: 90%; top: 50%; animation-delay: 4s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* The cosmic wheel */
+    .wheel-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 80px 0;
+      position: relative;
+    }
+
+    .wheel-container {
+      position: relative;
+      width: 350px;
+      height: 350px;
+    }
+
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border: 2px solid #c9a227;
+      border-radius: 50%;
+      position: relative;
+      animation: rotate 60s linear infinite;
+    }
+
+    .wheel::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%;
+      height: 60%;
+      border: 1px solid rgba(201, 162, 39, 0.4);
+      border-radius: 50%;
+    }
+
+    .wheel::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 30%;
+      height: 30%;
+      border: 1px solid rgba(201, 162, 39, 0.3);
+      border-radius: 50%;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .wheel-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, #f4d03f, #c9a227);
+      border-radius: 50%;
+      box-shadow: 0 0 30px rgba(201, 162, 39, 0.8);
+      z-index: 10;
+    }
+
+    .spoke {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 50%;
+      height: 1px;
+      background: linear-gradient(to right, rgba(201, 162, 39, 0.8), transparent);
+      transform-origin: left center;
+    }
+
+    .spoke:nth-child(1) { transform: rotate(0deg); }
+    .spoke:nth-child(2) { transform: rotate(45deg); }
+    .spoke:nth-child(3) { transform: rotate(90deg); }
+    .spoke:nth-child(4) { transform: rotate(135deg); }
+    .spoke:nth-child(5) { transform: rotate(180deg); }
+    .spoke:nth-child(6) { transform: rotate(225deg); }
+    .spoke:nth-child(7) { transform: rotate(270deg); }
+    .spoke:nth-child(8) { transform: rotate(315deg); }
+
+    .wheel-label {
+      position: absolute;
+      font-size: 0.8rem;
+      color: #c9a227;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .wheel-label.top { top: -40px; left: 50%; transform: translateX(-50%); }
+    .wheel-label.bottom { bottom: -40px; left: 50%; transform: translateX(-50%); }
+    .wheel-label.left { left: -80px; top: 50%; transform: translateY(-50%); }
+    .wheel-label.right { right: -80px; top: 50%; transform: translateY(-50%); }
+
+    /* Philosophy cards */
+    .cards-section {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin: 80px 0;
+    }
+
+    .card {
+      background: linear-gradient(135deg, rgba(30, 25, 20, 0.9), rgba(20, 18, 15, 0.95));
+      border: 1px solid rgba(201, 162, 39, 0.2);
+      padding: 40px 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #c9a227, transparent);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(201, 162, 39, 0.4);
+    }
+
+    .card-symbol {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      opacity: 0.9;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: #c9a227;
+      margin-bottom: 15px;
+      letter-spacing: 0.1em;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: #a09080;
+    }
+
+    /* Timeline section */
+    .timeline-section {
+      padding: 60px 0;
+      position: relative;
+    }
+
+    .timeline-title {
+      text-align: center;
+      font-size: 1.5rem;
+      color: #c9a227;
+      margin-bottom: 60px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+    }
+
+    .timeline {
+      position: relative;
+      padding: 40px 0;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, #c9a227, #c9a227, transparent);
+    }
+
+    .timeline-item {
+      display: flex;
+      margin: 50px 0;
+      position: relative;
+      width: 100%;
+    }
+
+    .timeline-item:nth-child(odd) {
+      justify-content: flex-start;
+    }
+
+    .timeline-item:nth-child(even) {
+      justify-content: flex-end;
+    }
+
+    .timeline-content {
+      width: 42%;
+      padding: 25px;
+      background: rgba(20, 18, 15, 0.8);
+      border: 1px solid rgba(201, 162, 39, 0.15);
+    }
+
+    .timeline-item:nth-child(odd) .timeline-content {
+      text-align: right;
+      margin-right: 8%;
+    }
+
+    .timeline-item:nth-child(even) .timeline-content {
+      text-align: left;
+      margin-left: 8%;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 12px;
+      height: 12px;
+      background: #c9a227;
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(201, 162, 39, 0.5);
+      z-index: 2;
+    }
+
+    .timeline-content h4 {
+      color: #c9a227;
+      font-weight: 400;
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
+
+    .timeline-content p {
+      color: #8b7355;
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    /* Quote section */
+    .quote-section {
+      text-align: center;
+      padding: 100px 60px;
+      position: relative;
+      margin: 60px 0;
+    }
+
+    .quote-section::before,
+    .quote-section::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #c9a227, transparent);
+    }
+
+    .quote-section::before { top: 0; }
+    .quote-section::after { bottom: 0; }
+
+    .quote {
+      font-size: 1.4rem;
+      font-style: italic;
+      color: #e8e4d9;
+      line-height: 2;
+      max-width: 700px;
+      margin: 0 auto 30px;
+    }
+
+    .quote-source {
+      color: #8b7355;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* Flowing particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(201, 162, 39, 0.3);
+      border-radius: 50%;
+      animation: drift 20s linear infinite;
+    }
+
+    @keyframes drift {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% {
+        transform: translateY(-100vh) translateX(100px);
+        opacity: 0;
+      }
+    }
+
+    /* Footer wisdom */
+    .footer {
+      text-align: center;
+      padding: 60px 0;
+      border-top: 1px solid rgba(201, 162, 39, 0.1);
+    }
+
+    .footer p {
+      color: #5a5040;
+      font-size: 0.85rem;
+      line-height: 2;
+      font-style: italic;
+    }
+
+    /* Detours Section */
+    .detours-section {
+      padding: 80px 0;
+      margin: 40px 0;
+    }
+
+    .detours-title {
+      text-align: center;
+      font-size: 1.5rem;
+      color: #c9a227;
+      margin-bottom: 15px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+    }
+
+    .detours-subtitle {
+      text-align: center;
+      color: #8b7355;
+      font-size: 0.95rem;
+      font-style: italic;
+      margin-bottom: 50px;
+    }
+
+    .path-visual {
+      margin: 50px 0;
+      padding: 20px;
+    }
+
+    .path-visual svg {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .main-path {
+      animation: dashFlow 3s linear infinite;
+    }
+
+    @keyframes dashFlow {
+      to {
+        stroke-dashoffset: -24;
+      }
+    }
+
+    .detour-path {
+      stroke-dasharray: 4,3;
+      animation: detourPulse 4s ease-in-out infinite;
+    }
+
+    .detour-1 { animation-delay: 0s; }
+    .detour-2 { animation-delay: 1.3s; }
+    .detour-3 { animation-delay: 2.6s; }
+
+    @keyframes detourPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    .detour-label {
+      fill: #8b7355;
+      font-size: 14px;
+      font-style: italic;
+      text-anchor: middle;
+    }
+
+    .journey-point {
+      animation: pointGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes pointGlow {
+      0%, 100% { filter: drop-shadow(0 0 3px rgba(201, 162, 39, 0.5)); }
+      50% { filter: drop-shadow(0 0 8px rgba(201, 162, 39, 0.8)); }
+    }
+
+    .return-arrow {
+      animation: arrowPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes arrowPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .detour-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      margin: 60px 0;
+    }
+
+    .detour-card {
+      background: linear-gradient(135deg, rgba(92, 58, 33, 0.2), rgba(20, 18, 15, 0.9));
+      border: 1px solid rgba(139, 69, 19, 0.3);
+      padding: 35px 25px;
+      text-align: center;
+      transition: all 0.4s ease;
+    }
+
+    .detour-card:hover {
+      border-color: rgba(139, 69, 19, 0.6);
+      transform: translateY(-3px);
+    }
+
+    .detour-icon {
+      font-size: 2rem;
+      color: #8b4513;
+      margin-bottom: 15px;
+      opacity: 0.8;
+    }
+
+    .detour-card h4 {
+      color: #a67c52;
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+      letter-spacing: 0.1em;
+    }
+
+    .detour-card p {
+      color: #7a6855;
+      font-size: 0.85rem;
+      line-height: 1.8;
+    }
+
+    .detour-wisdom {
+      text-align: center;
+      padding: 50px 40px;
+      margin: 40px 0;
+      border-top: 1px solid rgba(201, 162, 39, 0.1);
+      border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+    }
+
+    .wisdom-main {
+      font-size: 1.3rem;
+      color: #c9a227;
+      margin-bottom: 15px;
+      font-weight: 300;
+    }
+
+    .wisdom-sub {
+      font-size: 0.95rem;
+      color: #8b7355;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    .return-section {
+      margin-top: 60px;
+      padding: 40px;
+      background: linear-gradient(180deg, transparent, rgba(201, 162, 39, 0.03), transparent);
+    }
+
+    .return-title {
+      text-align: center;
+      color: #c9a227;
+      font-size: 1.2rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      margin-bottom: 40px;
+    }
+
+    .return-stages {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .return-stage {
+      text-align: center;
+      max-width: 180px;
+    }
+
+    .stage-marker {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      line-height: 36px;
+      border: 1px solid rgba(201, 162, 39, 0.4);
+      border-radius: 50%;
+      color: #c9a227;
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+
+    .return-stage p {
+      color: #8b7355;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .cards-section {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .detour-cards {
+        grid-template-columns: 1fr;
+        max-width: 350px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .return-stages {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+      }
+
+      .timeline {
+        padding-left: 40px;
+      }
+
+      .timeline::before {
+        left: 20px;
+        transform: none;
+      }
+
+      .timeline-item,
+      .timeline-item:nth-child(odd),
+      .timeline-item:nth-child(even) {
+        justify-content: flex-start;
+      }
+
+      .timeline-content,
+      .timeline-item:nth-child(odd) .timeline-content,
+      .timeline-item:nth-child(even) .timeline-content {
+        width: 100%;
+        margin-left: 30px;
+        margin-right: 0;
+        text-align: left;
+      }
+
+      .timeline-dot {
+        left: 20px;
+        transform: translate(-50%, -50%);
+      }
+
+      .wheel-container {
+        width: 280px;
+        height: 280px;
+      }
+
+      .path-visual svg {
+        min-height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background particles -->
+  <div class="particles">
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 20%; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 35%; animation-delay: 6s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 65%; animation-delay: 8s;"></div>
+    <div class="particle" style="left: 80%; animation-delay: 4s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 10s;"></div>
+  </div>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <h1>விதி யாத்திரை</h1>
+      <p class="sanskrit">The Written Journey</p>
+    </header>
+
+    <!-- River of Time -->
+    <section class="river-section">
+      <div class="river">
+        <svg viewBox="0 0 1200 400" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="riverGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:rgba(201,162,39,0.1)" />
+              <stop offset="50%" style="stop-color:rgba(201,162,39,0.6)" />
+              <stop offset="100%" style="stop-color:rgba(201,162,39,0.1)" />
+            </linearGradient>
+          </defs>
+          <path class="river-path" 
+                d="M0,200 Q150,150 300,180 T600,200 T900,170 T1200,200" 
+                stroke-dasharray="10,5"/>
+          <path class="river-path" 
+                d="M0,220 Q150,270 300,240 T600,220 T900,250 T1200,220" 
+                stroke-dasharray="10,5"
+                style="opacity: 0.5"/>
+        </svg>
+      </div>
+      <div class="moment" data-label="birth" style="left: 8%; top: 48%;"></div>
+      <div class="moment" data-label="love" style="left: 28%; top: 42%;"></div>
+      <div class="moment" data-label="loss" style="left: 48%; top: 50%;"></div>
+      <div class="moment" data-label="understanding" style="left: 68%; top: 38%;"></div>
+      <div class="moment" data-label="peace" style="left: 88%; top: 48%;"></div>
+    </section>
+
+    <!-- Philosophy Cards -->
+    <section class="cards-section">
+      <div class="card">
+        <div class="card-symbol">॥</div>
+        <h3>Prarabdha</h3>
+        <p>The karma already set in motion. The fruit that must ripen in this lifetime, written before the first breath.</p>
+      </div>
+      <div class="card">
+        <div class="card-symbol">ஓம்</div>
+        <h3>Witness</h3>
+        <p>Not to choose, but to understand why the choices unfold. The soul watches its own story being told.</p>
+      </div>
+      <div class="card">
+        <div class="card-symbol">∞</div>
+        <h3>Time</h3>
+        <p>The river that carries all moments. We do not swim against it. We learn to float, to see, to be present.</p>
+      </div>
+    </section>
+
+    <!-- Wheel of Time -->
+    <section class="wheel-section">
+      <div class="wheel-container">
+        <div class="wheel">
+          <div class="spoke"></div>
+          <div class="spoke"></div>
+          <div class="spoke"></div>
+          <div class="spoke"></div>
+          <div class="spoke"></div>
+          <div class="spoke"></div>
+          <div class="spoke"></div>
+          <div class="spoke"></div>
+        </div>
+        <div class="wheel-center"></div>
+        <span class="wheel-label top">Past</span>
+        <span class="wheel-label bottom">Future</span>
+        <span class="wheel-label left">Written</span>
+        <span class="wheel-label right">Lived</span>
+      </div>
+    </section>
+
+    <!-- Quote -->
+    <section class="quote-section">
+      <p class="quote">
+        "You have the right to work, but never to the fruit of work. 
+        You should never engage in action for the sake of reward."
+      </p>
+      <p class="quote-source">— Bhagavad Gita 2.47</p>
+    </section>
+
+    <!-- Detours Section -->
+    <section class="detours-section">
+      <h2 class="detours-title">The Detours</h2>
+      <p class="detours-subtitle">When we wander from the path, we still arrive — only more weathered</p>
+      
+      <div class="path-visual">
+        <svg viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="mainPathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#c9a227" />
+              <stop offset="100%" style="stop-color:#c9a227" />
+            </linearGradient>
+            <linearGradient id="detourGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#8b4513" />
+              <stop offset="50%" style="stop-color:#5c3a21" />
+              <stop offset="100%" style="stop-color:#8b4513" />
+            </linearGradient>
+          </defs>
+          
+          <!-- The written path (straight golden line) -->
+          <path class="main-path" 
+                d="M50,150 L950,150" 
+                stroke="url(#mainPathGradient)" 
+                stroke-width="3" 
+                fill="none"
+                stroke-dasharray="8,4"
+                opacity="0.4"/>
+          
+          <!-- Detour 1: Addiction loop -->
+          <path class="detour-path detour-1" 
+                d="M200,150 Q200,50 300,50 Q400,50 400,100 Q400,150 350,150 Q300,150 300,100 Q300,50 350,50 Q420,50 420,150" 
+                stroke="url(#detourGradient)" 
+                stroke-width="2" 
+                fill="none"
+                opacity="0.7"/>
+          
+          <!-- Detour 2: Separation descent -->
+          <path class="detour-path detour-2" 
+                d="M500,150 Q520,250 600,280 Q680,280 720,200 Q750,150 780,150" 
+                stroke="url(#detourGradient)" 
+                stroke-width="2" 
+                fill="none"
+                opacity="0.7"/>
+          
+          <!-- Detour 3: Depression wandering -->
+          <path class="detour-path detour-3" 
+                d="M850,150 Q830,100 800,120 Q770,140 790,170 Q810,200 850,180 Q880,160 900,150" 
+                stroke="url(#detourGradient)" 
+                stroke-width="2" 
+                fill="none"
+                opacity="0.7"/>
+          
+          <!-- Journey points -->
+          <circle cx="50" cy="150" r="8" fill="#c9a227" class="journey-point"/>
+          <circle cx="200" cy="150" r="6" fill="#c9a227" class="journey-point"/>
+          <circle cx="420" cy="150" r="6" fill="#c9a227" class="journey-point"/>
+          <circle cx="500" cy="150" r="6" fill="#c9a227" class="journey-point"/>
+          <circle cx="780" cy="150" r="6" fill="#c9a227" class="journey-point"/>
+          <circle cx="850" cy="150" r="6" fill="#c9a227" class="journey-point"/>
+          <circle cx="950" cy="150" r="8" fill="#c9a227" class="journey-point"/>
+          
+          <!-- Detour labels -->
+          <text x="310" y="30" class="detour-label">addiction</text>
+          <text x="600" y="270" class="detour-label">separation</text>
+          <text x="820" y="200" class="detour-label">depression</text>
+          
+          <!-- Return arrows -->
+          <path d="M415,140 L420,150 L415,160" stroke="#c9a227" stroke-width="1.5" fill="none" class="return-arrow"/>
+          <path d="M775,140 L780,150 L775,160" stroke="#c9a227" stroke-width="1.5" fill="none" class="return-arrow"/>
+          <path d="M895,140 L900,150 L895,160" stroke="#c9a227" stroke-width="1.5" fill="none" class="return-arrow"/>
+        </svg>
+      </div>
+
+      <!-- Detour cards -->
+      <div class="detour-cards">
+        <div class="detour-card">
+          <div class="detour-icon">↺</div>
+          <h4>The Loop</h4>
+          <p>Addiction, obsession, the circling back to what harms us. We think we're choosing escape, but we're just delaying arrival. The path waits.</p>
+        </div>
+        <div class="detour-card">
+          <div class="detour-icon">↓</div>
+          <h4>The Descent</h4>
+          <p>Separation, loss, the fall into darkness. We descend not by choice but by gravity. Yet even the lowest point bends back toward the path.</p>
+        </div>
+        <div class="detour-card">
+          <div class="detour-icon">〰</div>
+          <h4>The Wandering</h4>
+          <p>Depression, confusion, moving without direction. Small circles in the fog. But even aimless steps eventually find their way home.</p>
+        </div>
+      </div>
+
+      <div class="detour-wisdom">
+        <p class="wisdom-main">The detours do not change the destination.</p>
+        <p class="wisdom-sub">They only change how bruised we are when we arrive, and how deeply we understand the path we were always meant to walk.</p>
+      </div>
+
+      <!-- The return visualization -->
+      <div class="return-section">
+        <h3 class="return-title">The Return</h3>
+        <div class="return-stages">
+          <div class="return-stage">
+            <span class="stage-marker">१</span>
+            <p>Recognition — seeing that we have wandered</p>
+          </div>
+          <div class="return-stage">
+            <span class="stage-marker">२</span>
+            <p>Exhaustion — the detour taking all we have</p>
+          </div>
+          <div class="return-stage">
+            <span class="stage-marker">३</span>
+            <p>Surrender — releasing the illusion of control</p>
+          </div>
+          <div class="return-stage">
+            <span class="stage-marker">४</span>
+            <p>Return — finding the path was always beneath our feet</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline of Understanding -->
+    <section class="timeline-section">
+      <h2 class="timeline-title">The Unfolding</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>What Was Written</h4>
+            <p>Before form, before name — the journey already existed. The meetings, the partings, the seasons of darkness.</p>
+          </div>
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>What We Experience</h4>
+            <p>Living through what was always going to happen. Feeling it fully. The joy, the breaking, the slow mending.</p>
+          </div>
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>What We Understand</h4>
+            <p>Not why it happened differently — but why it happened at all. The purpose beneath the pain. Recognition.</p>
+          </div>
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h4>What Remains</h4>
+            <p>Peace. Not the absence of memory, but the presence of acceptance. Walking the path awake.</p>
+          </div>
+          <div class="timeline-dot"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>
+        Live the life and experience what unfolds before you.<br>
+        The destination was always certain.<br>
+        Only the walking is ours.
+      </p>
+      <p style="margin-top: 40px; font-style: normal; color: #8b7355;">
+        Created by <a href="https://happysathya.com" target="_blank" style="color: #c9a227; text-decoration: none;">Sathya</a> • <a href="https://www.linkedin.com/in/happysathya/" target="_blank" style="color: #c9a227; text-decoration: none;">LinkedIn</a>
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
