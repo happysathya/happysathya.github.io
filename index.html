@@ -197,7 +197,7 @@
         </header>
 
         <div class="search-container">
-            <input type="text" class="search-input" id="search" placeholder="Search posts..." autocomplete="off">
+            <input type="text" class="search-input" id="search" placeholder="Filter by title, tag..." autocomplete="off">
         </div>
 
         <main class="posts" id="posts"></main>
@@ -208,7 +208,6 @@
         </footer>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
     <script>
         const posts = [
             {
@@ -225,10 +224,14 @@
         const searchInput = document.getElementById('search');
         const noResults = document.getElementById('no-results');
 
-        const fuse = new Fuse(posts, {
-            keys: ['title', 'excerpt', 'tag'],
-            threshold: 0.4
-        });
+        function searchPosts(query) {
+            const terms = query.toLowerCase().split(/\s+/).filter(t => t.length > 0);
+
+            return posts.filter(post => {
+                const searchable = `${post.title} ${post.excerpt} ${post.tag}`.toLowerCase();
+                return terms.every(term => searchable.includes(term));
+            });
+        }
 
         function renderPosts(postsToRender) {
             postsContainer.innerHTML = '';
@@ -264,8 +267,7 @@
                 return;
             }
 
-            const results = fuse.search(query).map(r => r.item);
-            renderPosts(results);
+            renderPosts(searchPosts(query));
         });
 
         // Initial render

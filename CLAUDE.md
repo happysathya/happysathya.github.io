@@ -9,13 +9,11 @@ This is a static technical blog hosted on GitHub Pages at `happysathya.github.io
 
 ## Search Setup
 
-The blog uses [Fuse.js](https://www.fusejs.io/) for client-side fuzzy search. The library is loaded via CDN:
+The blog uses simple client-side substring search (no external dependencies).
 
-```html
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
-```
-
-Search is configured to match against `title`, `excerpt`, and `tag` fields with a threshold of 0.4 (lower = stricter matching).
+- Searches across `title`, `excerpt`, and `tag` fields
+- Case-insensitive
+- Multiple search terms must ALL match (e.g., "claude skills" finds posts containing both words)
 
 ## Adding a New Blog Entry
 
@@ -41,7 +39,7 @@ const posts = [
 | Field | Description |
 |-------|-------------|
 | `url` | Filename of the post HTML file |
-| `date` | Display date (e.g., "Jan 2025") |
+| `date` | Display date (e.g., "Jan 2026") |
 | `tag` | Category/topic tag (displayed in blue) |
 | `title` | Full post title |
 | `excerpt` | 1-2 sentence summary for the card |
