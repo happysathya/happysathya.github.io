@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Blog | Sathya</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f0f12;
+            --bg-secondary: #18181d;
+            --bg-tertiary: #1f1f26;
+            --text-primary: #e8e8ed;
+            --text-secondary: #9898a6;
+            --text-muted: #6b6b7a;
+            --accent-orange: #ff7b54;
+            --accent-blue: #5a9fff;
+            --accent-purple: #b490ff;
+            --border-color: #2a2a35;
+            --border-subtle: #232330;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 15px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        header {
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .search-container {
+            margin-bottom: 40px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-orange);
+        }
+
+        .posts {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .post-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px 32px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: block;
+        }
+
+        .post-card:hover {
+            border-color: var(--accent-orange);
+            transform: translateY(-2px);
+        }
+
+        .post-card.hidden {
+            display: none;
+        }
+
+        .post-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+            display: flex;
+            gap: 16px;
+        }
+
+        .post-tag {
+            color: var(--accent-blue);
+        }
+
+        .post-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .post-excerpt {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .no-results {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px 0;
+            display: none;
+        }
+
+        .no-results.visible {
+            display: block;
+        }
+
+        footer {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        footer a:hover {
+            color: var(--accent-orange);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 24px;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .post-card {
+                padding: 22px 24px;
+            }
+
+            .post-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Technical Blog</h1>
+            <p class="subtitle">Notes on software engineering, AI, and tools</p>
+        </header>
+
+        <div class="search-container">
+            <input type="text" class="search-input" id="search" placeholder="Search posts..." autocomplete="off">
+        </div>
+
+        <main class="posts" id="posts"></main>
+        <p class="no-results" id="no-results">No posts found</p>
+
+        <footer>
+            <a href="https://happysathya.com">happysathya.com</a>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+    <script>
+        const posts = [
+            {
+                url: 'claude-code-extensibility-guide.html',
+                date: 'Jan 2026',
+                tag: 'Claude Code',
+                title: 'Claude Code Extensibility Guide: Plugins, Subagents & Skills',
+                excerpt: 'A comprehensive guide to the three extensibility mechanisms in Claude Code - how they work, when to use each, and best practices for building custom functionality.'
+            }
+            // Add more posts here
+        ];
+
+        const postsContainer = document.getElementById('posts');
+        const searchInput = document.getElementById('search');
+        const noResults = document.getElementById('no-results');
+
+        const fuse = new Fuse(posts, {
+            keys: ['title', 'excerpt', 'tag'],
+            threshold: 0.4
+        });
+
+        function renderPosts(postsToRender) {
+            postsContainer.innerHTML = '';
+
+            if (postsToRender.length === 0) {
+                noResults.classList.add('visible');
+                return;
+            }
+
+            noResults.classList.remove('visible');
+
+            postsToRender.forEach(post => {
+                const card = document.createElement('a');
+                card.href = post.url;
+                card.className = 'post-card';
+                card.innerHTML = `
+                    <div class="post-meta">
+                        <span class="post-date">${post.date}</span>
+                        <span class="post-tag">${post.tag}</span>
+                    </div>
+                    <h2 class="post-title">${post.title}</h2>
+                    <p class="post-excerpt">${post.excerpt}</p>
+                `;
+                postsContainer.appendChild(card);
+            });
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+
+            if (!query) {
+                renderPosts(posts);
+                return;
+            }
+
+            const results = fuse.search(query).map(r => r.item);
+            renderPosts(results);
+        });
+
+        // Initial render
+        renderPosts(posts);
+    </script>
+</body>
+</html>
