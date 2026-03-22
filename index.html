@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technical Blog | Sathya</title>
+    <title>Sathya's Blog — Tech, Film & Philosophy</title>
+    <meta name="description" content="A personal blog by Sathya covering technology, film reflections, and philosophy.">
+    <link rel="canonical" href="https://happysathya.github.io/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Sathya's Blog — Tech, Film & Philosophy">
+    <meta property="og:description" content="A personal blog by Sathya covering technology, film reflections, and philosophy.">
+    <meta property="og:url" content="https://happysathya.github.io/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -170,6 +176,40 @@
             color: var(--accent-orange);
         }
 
+        .filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .filter-btn {
+            padding: 8px 18px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent-orange);
+            color: var(--text-secondary);
+        }
+
+        .filter-btn.active {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .post-tag.personal {
+            color: var(--accent-purple);
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 40px 24px;
@@ -192,9 +232,15 @@
 <body>
     <div class="container">
         <header>
-            <h1>Technical Blog</h1>
-            <p class="subtitle">Notes on software engineering, AI, and tools</p>
+            <h1>Blog</h1>
+            <p class="subtitle">Technical notes and personal reflections</p>
         </header>
+
+        <div class="filters" id="filters">
+            <button class="filter-btn active" data-category="all">All</button>
+            <button class="filter-btn" data-category="technical">Technical</button>
+            <button class="filter-btn" data-category="personal">Personal</button>
+        </div>
 
         <div class="search-container">
             <input type="text" class="search-input" id="search" placeholder="Filter by title, tag..." autocomplete="off">
@@ -206,33 +252,57 @@
         <footer>
             <p><a href="https://happysathya.com" style="color: var(--text-muted); text-decoration: none;">happysathya.com</a></p>
             <p style="margin-top: 8px; font-size: 0.85rem; color: var(--text-muted);">Created by <a href="https://happysathya.com" target="_blank" style="color: var(--accent-blue); text-decoration: none;">Sathya</a> • <a href="https://www.linkedin.com/in/happysathya/" target="_blank" style="color: var(--accent-blue); text-decoration: none;">LinkedIn</a></p>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Generated with Claude • January 2026</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Generated with Claude</p>
         </footer>
     </div>
 
     <script>
         const posts = [
             {
+                url: 'the-juke-joint-had-a-door.html',
+                date: 'Mar 2026',
+                tag: 'Film',
+                category: 'personal',
+                title: 'The Juke Joint Had a Door — Reflections on Movie Sinners (2025)',
+                excerpt: 'Vampirism as colonialism, resistance through ancestral culture, and why the juke joint had a door. A film allegory distilled.'
+            },
+            {
+                url: 'the-written-journey.html',
+                date: 'Mar 2026',
+                tag: 'Philosophy',
+                category: 'personal',
+                title: 'விதி யாத்திரை — The Written Journey',
+                excerpt: 'Prarabdha, detours, and the path that was always beneath our feet. A visual meditation on fate and experience.'
+            },
+            {
                 url: 'claude-code-extensibility-guide.html',
                 date: 'Jan 2026',
                 tag: 'Claude Code',
+                category: 'technical',
                 title: 'Claude Code Extensibility Guide: Plugins, Subagents & Skills',
                 excerpt: 'Plugins bundle extensions into shareable packages, Subagents provide specialized AI assistants with isolated context, and Skills inject task-specific instructions on demand.'
             }
-            // Add more posts here
         ];
 
+        let activeCategory = 'all';
         const postsContainer = document.getElementById('posts');
         const searchInput = document.getElementById('search');
         const noResults = document.getElementById('no-results');
 
-        function searchPosts(query) {
-            const terms = query.toLowerCase().split(/\s+/).filter(t => t.length > 0);
-
-            return posts.filter(post => {
-                const searchable = `${post.title} ${post.excerpt} ${post.tag}`.toLowerCase();
-                return terms.every(term => searchable.includes(term));
-            });
+        function getFilteredPosts() {
+            let filtered = posts;
+            if (activeCategory !== 'all') {
+                filtered = filtered.filter(p => p.category === activeCategory);
+            }
+            const query = searchInput.value.trim();
+            if (query) {
+                const terms = query.toLowerCase().split(/\s+/).filter(t => t.length > 0);
+                filtered = filtered.filter(post => {
+                    const searchable = `${post.title} ${post.excerpt} ${post.tag} ${post.category}`.toLowerCase();
+                    return terms.every(term => searchable.includes(term));
+                });
+            }
+            return filtered;
         }
 
         function renderPosts(postsToRender) {
@@ -249,10 +319,11 @@
                 const card = document.createElement('a');
                 card.href = post.url;
                 card.className = 'post-card';
+                const tagClass = post.category === 'personal' ? 'post-tag personal' : 'post-tag';
                 card.innerHTML = `
                     <div class="post-meta">
                         <span class="post-date">${post.date}</span>
-                        <span class="post-tag">${post.tag}</span>
+                        <span class="${tagClass}">${post.tag}</span>
                     </div>
                     <h2 class="post-title">${post.title}</h2>
                     <p class="post-excerpt">${post.excerpt}</p>
@@ -261,19 +332,20 @@
             });
         }
 
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.trim();
+        document.getElementById('filters').addEventListener('click', (e) => {
+            if (!e.target.classList.contains('filter-btn')) return;
+            activeCategory = e.target.dataset.category;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            renderPosts(getFilteredPosts());
+        });
 
-            if (!query) {
-                renderPosts(posts);
-                return;
-            }
-
-            renderPosts(searchPosts(query));
+        searchInput.addEventListener('input', () => {
+            renderPosts(getFilteredPosts());
         });
 
         // Initial render
-        renderPosts(posts);
+        renderPosts(getFilteredPosts());
     </script>
 </body>
 </html>

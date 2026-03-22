@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://happysathya.github.io/sitemap.xml

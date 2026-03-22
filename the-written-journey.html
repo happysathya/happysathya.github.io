@@ -3,8 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Written Journey</title>
+  <title>விதி யாத்திரை — The Written Journey</title>
+  <meta name="description" content="Prarabdha, detours, and the path that was always beneath our feet. A visual meditation on fate and experience.">
+  <link rel="canonical" href="https://happysathya.github.io/the-written-journey.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="விதி யாத்திரை — The Written Journey">
+  <meta property="og:description" content="Prarabdha, detours, and the path that was always beneath our feet. A visual meditation on fate and experience.">
+  <meta property="og:url" content="https://happysathya.github.io/the-written-journey.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-primary: #0f0f12;
+      --bg-secondary: #18181d;
+      --bg-tertiary: #1f1f26;
+      --text-primary: #e8e8ed;
+      --text-secondary: #9898a6;
+      --text-muted: #6b6b7a;
+      --accent-orange: #ff7b54;
+      --accent-blue: #5a9fff;
+      --accent-purple: #b490ff;
+      --accent-green: #5ce0a8;
+      --border-color: #2a2a35;
+      --border-subtle: #232330;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -12,11 +36,13 @@
     }
 
     body {
-      background: #0a0a12;
+      background: var(--bg-primary);
       min-height: 100vh;
-      font-family: Georgia, 'Times New Roman', serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       overflow-x: hidden;
-      color: #e8e4d9;
+      color: var(--text-primary);
+      line-height: 1.7;
+      font-size: 15px;
     }
 
     .container {
@@ -25,7 +51,21 @@
       padding: 60px 40px;
     }
 
-    /* Sanskrit/Tamil inspired header */
+    nav {
+      margin-bottom: 30px;
+    }
+
+    nav a {
+      color: var(--accent-orange);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* Header */
     .header {
       text-align: center;
       margin-bottom: 80px;
@@ -33,15 +73,18 @@
 
     .header h1 {
       font-size: 2.5rem;
-      font-weight: 300;
+      font-weight: 700;
       letter-spacing: 0.3em;
-      color: #c9a227;
       margin-bottom: 20px;
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .header .sanskrit {
       font-size: 1.1rem;
-      color: #8b7355;
+      color: var(--text-muted);
       font-style: italic;
       letter-spacing: 0.1em;
     }
@@ -84,8 +127,8 @@
       width: 16px;
       height: 16px;
       border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #f4d03f, #c9a227);
-      box-shadow: 0 0 20px rgba(201, 162, 39, 0.5);
+      background: radial-gradient(circle at 30% 30%, var(--accent-orange), #c45a30);
+      box-shadow: 0 0 20px rgba(255, 123, 84, 0.5);
       animation: float 6s ease-in-out infinite;
     }
 
@@ -97,7 +140,7 @@
       transform: translateX(-50%);
       white-space: nowrap;
       font-size: 0.75rem;
-      color: #8b7355;
+      color: var(--text-muted);
       opacity: 0.8;
     }
 
@@ -130,7 +173,7 @@
     .wheel {
       width: 100%;
       height: 100%;
-      border: 2px solid #c9a227;
+      border: 2px solid var(--accent-orange);
       border-radius: 50%;
       position: relative;
       animation: rotate 60s linear infinite;
@@ -144,7 +187,7 @@
       transform: translate(-50%, -50%);
       width: 60%;
       height: 60%;
-      border: 1px solid rgba(201, 162, 39, 0.4);
+      border: 1px solid rgba(255, 123, 84, 0.4);
       border-radius: 50%;
     }
 
@@ -156,7 +199,7 @@
       transform: translate(-50%, -50%);
       width: 30%;
       height: 30%;
-      border: 1px solid rgba(201, 162, 39, 0.3);
+      border: 1px solid rgba(255, 123, 84, 0.3);
       border-radius: 50%;
     }
 
@@ -172,9 +215,9 @@
       transform: translate(-50%, -50%);
       width: 20px;
       height: 20px;
-      background: radial-gradient(circle, #f4d03f, #c9a227);
+      background: radial-gradient(circle, var(--accent-orange), #c45a30);
       border-radius: 50%;
-      box-shadow: 0 0 30px rgba(201, 162, 39, 0.8);
+      box-shadow: 0 0 30px rgba(255, 123, 84, 0.8);
       z-index: 10;
     }
 
@@ -184,7 +227,7 @@
       left: 50%;
       width: 50%;
       height: 1px;
-      background: linear-gradient(to right, rgba(201, 162, 39, 0.8), transparent);
+      background: linear-gradient(to right, rgba(255, 123, 84, 0.8), transparent);
       transform-origin: left center;
     }
 
@@ -200,7 +243,7 @@
     .wheel-label {
       position: absolute;
       font-size: 0.8rem;
-      color: #c9a227;
+      color: var(--accent-orange);
       text-transform: uppercase;
       letter-spacing: 0.15em;
     }
@@ -219,8 +262,9 @@
     }
 
     .card {
-      background: linear-gradient(135deg, rgba(30, 25, 20, 0.9), rgba(20, 18, 15, 0.95));
-      border: 1px solid rgba(201, 162, 39, 0.2);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
       padding: 40px 30px;
       text-align: center;
       position: relative;
@@ -235,7 +279,7 @@
       left: 0;
       right: 0;
       height: 3px;
-      background: linear-gradient(90deg, transparent, #c9a227, transparent);
+      background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
       opacity: 0;
       transition: opacity 0.5s ease;
     }
@@ -246,7 +290,7 @@
 
     .card:hover {
       transform: translateY(-5px);
-      border-color: rgba(201, 162, 39, 0.4);
+      border-color: var(--accent-orange);
     }
 
     .card-symbol {
@@ -257,8 +301,8 @@
 
     .card h3 {
       font-size: 1.1rem;
-      font-weight: 400;
-      color: #c9a227;
+      font-weight: 600;
+      color: var(--accent-orange);
       margin-bottom: 15px;
       letter-spacing: 0.1em;
     }
@@ -266,7 +310,7 @@
     .card p {
       font-size: 0.9rem;
       line-height: 1.8;
-      color: #a09080;
+      color: var(--text-secondary);
     }
 
     /* Timeline section */
@@ -278,9 +322,9 @@
     .timeline-title {
       text-align: center;
       font-size: 1.5rem;
-      color: #c9a227;
+      color: var(--text-primary);
       margin-bottom: 60px;
-      font-weight: 300;
+      font-weight: 700;
       letter-spacing: 0.2em;
     }
 
@@ -299,7 +343,7 @@
       left: 50%;
       transform: translateX(-50%);
       width: 1px;
-      background: linear-gradient(to bottom, transparent, #c9a227, #c9a227, transparent);
+      background: linear-gradient(to bottom, transparent, var(--accent-orange), var(--accent-orange), transparent);
     }
 
     .timeline-item {
@@ -320,8 +364,9 @@
     .timeline-content {
       width: 42%;
       padding: 25px;
-      background: rgba(20, 18, 15, 0.8);
-      border: 1px solid rgba(201, 162, 39, 0.15);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
     }
 
     .timeline-item:nth-child(odd) .timeline-content {
@@ -341,21 +386,21 @@
       transform: translate(-50%, -50%);
       width: 12px;
       height: 12px;
-      background: #c9a227;
+      background: var(--accent-orange);
       border-radius: 50%;
-      box-shadow: 0 0 15px rgba(201, 162, 39, 0.5);
+      box-shadow: 0 0 15px rgba(255, 123, 84, 0.5);
       z-index: 2;
     }
 
     .timeline-content h4 {
-      color: #c9a227;
-      font-weight: 400;
+      color: var(--accent-orange);
+      font-weight: 600;
       margin-bottom: 10px;
       font-size: 1rem;
     }
 
     .timeline-content p {
-      color: #8b7355;
+      color: var(--text-secondary);
       font-size: 0.85rem;
       line-height: 1.7;
     }
@@ -376,7 +421,7 @@
       transform: translateX(-50%);
       width: 100px;
       height: 1px;
-      background: linear-gradient(90deg, transparent, #c9a227, transparent);
+      background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
     }
 
     .quote-section::before { top: 0; }
@@ -385,14 +430,14 @@
     .quote {
       font-size: 1.4rem;
       font-style: italic;
-      color: #e8e4d9;
+      color: var(--text-primary);
       line-height: 2;
       max-width: 700px;
       margin: 0 auto 30px;
     }
 
     .quote-source {
-      color: #8b7355;
+      color: var(--text-muted);
       font-size: 0.9rem;
       letter-spacing: 0.1em;
     }
@@ -413,7 +458,7 @@
       position: absolute;
       width: 3px;
       height: 3px;
-      background: rgba(201, 162, 39, 0.3);
+      background: rgba(255, 123, 84, 0.3);
       border-radius: 50%;
       animation: drift 20s linear infinite;
     }
@@ -431,20 +476,6 @@
       }
     }
 
-    /* Footer wisdom */
-    .footer {
-      text-align: center;
-      padding: 60px 0;
-      border-top: 1px solid rgba(201, 162, 39, 0.1);
-    }
-
-    .footer p {
-      color: #5a5040;
-      font-size: 0.85rem;
-      line-height: 2;
-      font-style: italic;
-    }
-
     /* Detours Section */
     .detours-section {
       padding: 80px 0;
@@ -454,15 +485,15 @@
     .detours-title {
       text-align: center;
       font-size: 1.5rem;
-      color: #c9a227;
+      color: var(--text-primary);
       margin-bottom: 15px;
-      font-weight: 300;
+      font-weight: 700;
       letter-spacing: 0.2em;
     }
 
     .detours-subtitle {
       text-align: center;
-      color: #8b7355;
+      color: var(--text-muted);
       font-size: 0.95rem;
       font-style: italic;
       margin-bottom: 50px;
@@ -505,7 +536,7 @@
     }
 
     .detour-label {
-      fill: #8b7355;
+      fill: var(--text-muted);
       font-size: 14px;
       font-style: italic;
       text-anchor: middle;
@@ -516,8 +547,8 @@
     }
 
     @keyframes pointGlow {
-      0%, 100% { filter: drop-shadow(0 0 3px rgba(201, 162, 39, 0.5)); }
-      50% { filter: drop-shadow(0 0 8px rgba(201, 162, 39, 0.8)); }
+      0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 123, 84, 0.5)); }
+      50% { filter: drop-shadow(0 0 8px rgba(255, 123, 84, 0.8)); }
     }
 
     .return-arrow {
@@ -537,35 +568,36 @@
     }
 
     .detour-card {
-      background: linear-gradient(135deg, rgba(92, 58, 33, 0.2), rgba(20, 18, 15, 0.9));
-      border: 1px solid rgba(139, 69, 19, 0.3);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
       padding: 35px 25px;
       text-align: center;
       transition: all 0.4s ease;
     }
 
     .detour-card:hover {
-      border-color: rgba(139, 69, 19, 0.6);
+      border-color: var(--accent-purple);
       transform: translateY(-3px);
     }
 
     .detour-icon {
       font-size: 2rem;
-      color: #8b4513;
+      color: var(--accent-purple);
       margin-bottom: 15px;
       opacity: 0.8;
     }
 
     .detour-card h4 {
-      color: #a67c52;
+      color: var(--accent-purple);
       font-size: 1rem;
-      font-weight: 400;
+      font-weight: 600;
       margin-bottom: 12px;
       letter-spacing: 0.1em;
     }
 
     .detour-card p {
-      color: #7a6855;
+      color: var(--text-secondary);
       font-size: 0.85rem;
       line-height: 1.8;
     }
@@ -574,20 +606,20 @@
       text-align: center;
       padding: 50px 40px;
       margin: 40px 0;
-      border-top: 1px solid rgba(201, 162, 39, 0.1);
-      border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
     }
 
     .wisdom-main {
       font-size: 1.3rem;
-      color: #c9a227;
+      color: var(--accent-orange);
       margin-bottom: 15px;
-      font-weight: 300;
+      font-weight: 700;
     }
 
     .wisdom-sub {
       font-size: 0.95rem;
-      color: #8b7355;
+      color: var(--text-secondary);
       max-width: 600px;
       margin: 0 auto;
       line-height: 1.8;
@@ -596,14 +628,14 @@
     .return-section {
       margin-top: 60px;
       padding: 40px;
-      background: linear-gradient(180deg, transparent, rgba(201, 162, 39, 0.03), transparent);
+      background: linear-gradient(180deg, transparent, rgba(255, 123, 84, 0.03), transparent);
     }
 
     .return-title {
       text-align: center;
-      color: #c9a227;
+      color: var(--text-primary);
       font-size: 1.2rem;
-      font-weight: 300;
+      font-weight: 700;
       letter-spacing: 0.15em;
       margin-bottom: 40px;
     }
@@ -625,17 +657,37 @@
       width: 36px;
       height: 36px;
       line-height: 36px;
-      border: 1px solid rgba(201, 162, 39, 0.4);
+      border: 1px solid rgba(255, 123, 84, 0.4);
       border-radius: 50%;
-      color: #c9a227;
+      color: var(--accent-orange);
       font-size: 1rem;
       margin-bottom: 12px;
     }
 
     .return-stage p {
-      color: #8b7355;
+      color: var(--text-secondary);
       font-size: 0.85rem;
       line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 80px;
+      padding-top: 30px;
+      border-top: 1px solid var(--border-subtle);
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    footer p {
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      line-height: 2;
+    }
+
+    footer a {
+      text-decoration: none;
     }
 
     /* Responsive */
@@ -698,6 +750,16 @@
         min-height: 200px;
       }
     }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 40px 24px;
+      }
+
+      .header h1 {
+        font-size: 1.8rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -713,6 +775,11 @@
   </div>
 
   <div class="container">
+
+    <nav>
+      <a href="index.html">&larr; Blog</a>
+    </nav>
+
     <!-- Header -->
     <header class="header">
       <h1>விதி யாத்திரை</h1>
@@ -725,16 +792,16 @@
         <svg viewBox="0 0 1200 400" preserveAspectRatio="none">
           <defs>
             <linearGradient id="riverGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color:rgba(201,162,39,0.1)" />
-              <stop offset="50%" style="stop-color:rgba(201,162,39,0.6)" />
-              <stop offset="100%" style="stop-color:rgba(201,162,39,0.1)" />
+              <stop offset="0%" style="stop-color:rgba(255,123,84,0.1)" />
+              <stop offset="50%" style="stop-color:rgba(255,123,84,0.6)" />
+              <stop offset="100%" style="stop-color:rgba(255,123,84,0.1)" />
             </linearGradient>
           </defs>
-          <path class="river-path" 
-                d="M0,200 Q150,150 300,180 T600,200 T900,170 T1200,200" 
+          <path class="river-path"
+                d="M0,200 Q150,150 300,180 T600,200 T900,170 T1200,200"
                 stroke-dasharray="10,5"/>
-          <path class="river-path" 
-                d="M0,220 Q150,270 300,240 T600,220 T900,250 T1200,220" 
+          <path class="river-path"
+                d="M0,220 Q150,270 300,240 T600,220 T900,250 T1200,220"
                 stroke-dasharray="10,5"
                 style="opacity: 0.5"/>
         </svg>
@@ -789,7 +856,7 @@
     <!-- Quote -->
     <section class="quote-section">
       <p class="quote">
-        "You have the right to work, but never to the fruit of work. 
+        "You have the right to work, but never to the fruit of work.
         You should never engage in action for the sake of reward."
       </p>
       <p class="quote-source">— Bhagavad Gita 2.47</p>
@@ -799,72 +866,72 @@
     <section class="detours-section">
       <h2 class="detours-title">The Detours</h2>
       <p class="detours-subtitle">When we wander from the path, we still arrive — only more weathered</p>
-      
+
       <div class="path-visual">
         <svg viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet">
           <defs>
             <linearGradient id="mainPathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color:#c9a227" />
-              <stop offset="100%" style="stop-color:#c9a227" />
+              <stop offset="0%" style="stop-color:#ff7b54" />
+              <stop offset="100%" style="stop-color:#ff7b54" />
             </linearGradient>
             <linearGradient id="detourGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color:#8b4513" />
-              <stop offset="50%" style="stop-color:#5c3a21" />
-              <stop offset="100%" style="stop-color:#8b4513" />
+              <stop offset="0%" style="stop-color:#b490ff" />
+              <stop offset="50%" style="stop-color:#7a5cc8" />
+              <stop offset="100%" style="stop-color:#b490ff" />
             </linearGradient>
           </defs>
-          
-          <!-- The written path (straight golden line) -->
-          <path class="main-path" 
-                d="M50,150 L950,150" 
-                stroke="url(#mainPathGradient)" 
-                stroke-width="3" 
+
+          <!-- The written path -->
+          <path class="main-path"
+                d="M50,150 L950,150"
+                stroke="url(#mainPathGradient)"
+                stroke-width="3"
                 fill="none"
                 stroke-dasharray="8,4"
                 opacity="0.4"/>
-          
+
           <!-- Detour 1: Addiction loop -->
-          <path class="detour-path detour-1" 
-                d="M200,150 Q200,50 300,50 Q400,50 400,100 Q400,150 350,150 Q300,150 300,100 Q300,50 350,50 Q420,50 420,150" 
-                stroke="url(#detourGradient)" 
-                stroke-width="2" 
+          <path class="detour-path detour-1"
+                d="M200,150 Q200,50 300,50 Q400,50 400,100 Q400,150 350,150 Q300,150 300,100 Q300,50 350,50 Q420,50 420,150"
+                stroke="url(#detourGradient)"
+                stroke-width="2"
                 fill="none"
                 opacity="0.7"/>
-          
+
           <!-- Detour 2: Separation descent -->
-          <path class="detour-path detour-2" 
-                d="M500,150 Q520,250 600,280 Q680,280 720,200 Q750,150 780,150" 
-                stroke="url(#detourGradient)" 
-                stroke-width="2" 
+          <path class="detour-path detour-2"
+                d="M500,150 Q520,250 600,280 Q680,280 720,200 Q750,150 780,150"
+                stroke="url(#detourGradient)"
+                stroke-width="2"
                 fill="none"
                 opacity="0.7"/>
-          
+
           <!-- Detour 3: Depression wandering -->
-          <path class="detour-path detour-3" 
-                d="M850,150 Q830,100 800,120 Q770,140 790,170 Q810,200 850,180 Q880,160 900,150" 
-                stroke="url(#detourGradient)" 
-                stroke-width="2" 
+          <path class="detour-path detour-3"
+                d="M850,150 Q830,100 800,120 Q770,140 790,170 Q810,200 850,180 Q880,160 900,150"
+                stroke="url(#detourGradient)"
+                stroke-width="2"
                 fill="none"
                 opacity="0.7"/>
-          
+
           <!-- Journey points -->
-          <circle cx="50" cy="150" r="8" fill="#c9a227" class="journey-point"/>
-          <circle cx="200" cy="150" r="6" fill="#c9a227" class="journey-point"/>
-          <circle cx="420" cy="150" r="6" fill="#c9a227" class="journey-point"/>
-          <circle cx="500" cy="150" r="6" fill="#c9a227" class="journey-point"/>
-          <circle cx="780" cy="150" r="6" fill="#c9a227" class="journey-point"/>
-          <circle cx="850" cy="150" r="6" fill="#c9a227" class="journey-point"/>
-          <circle cx="950" cy="150" r="8" fill="#c9a227" class="journey-point"/>
-          
+          <circle cx="50" cy="150" r="8" fill="#ff7b54" class="journey-point"/>
+          <circle cx="200" cy="150" r="6" fill="#ff7b54" class="journey-point"/>
+          <circle cx="420" cy="150" r="6" fill="#ff7b54" class="journey-point"/>
+          <circle cx="500" cy="150" r="6" fill="#ff7b54" class="journey-point"/>
+          <circle cx="780" cy="150" r="6" fill="#ff7b54" class="journey-point"/>
+          <circle cx="850" cy="150" r="6" fill="#ff7b54" class="journey-point"/>
+          <circle cx="950" cy="150" r="8" fill="#ff7b54" class="journey-point"/>
+
           <!-- Detour labels -->
           <text x="310" y="30" class="detour-label">addiction</text>
           <text x="600" y="270" class="detour-label">separation</text>
           <text x="820" y="200" class="detour-label">depression</text>
-          
+
           <!-- Return arrows -->
-          <path d="M415,140 L420,150 L415,160" stroke="#c9a227" stroke-width="1.5" fill="none" class="return-arrow"/>
-          <path d="M775,140 L780,150 L775,160" stroke="#c9a227" stroke-width="1.5" fill="none" class="return-arrow"/>
-          <path d="M895,140 L900,150 L895,160" stroke="#c9a227" stroke-width="1.5" fill="none" class="return-arrow"/>
+          <path d="M415,140 L420,150 L415,160" stroke="#ff7b54" stroke-width="1.5" fill="none" class="return-arrow"/>
+          <path d="M775,140 L780,150 L775,160" stroke="#ff7b54" stroke-width="1.5" fill="none" class="return-arrow"/>
+          <path d="M895,140 L900,150 L895,160" stroke="#ff7b54" stroke-width="1.5" fill="none" class="return-arrow"/>
         </svg>
       </div>
 
@@ -952,14 +1019,17 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-      <p>
+    <footer>
+      <p style="font-style: italic;">
         Live the life and experience what unfolds before you.<br>
         The destination was always certain.<br>
         Only the walking is ours.
       </p>
-      <p style="margin-top: 40px; font-style: normal; color: #8b7355;">
-        Created by <a href="https://happysathya.com" target="_blank" style="color: #c9a227; text-decoration: none;">Sathya</a> • <a href="https://www.linkedin.com/in/happysathya/" target="_blank" style="color: #c9a227; text-decoration: none;">LinkedIn</a>
+      <p style="margin-top: 30px;">
+        <a href="index.html" style="color: var(--accent-orange);">&larr; Blog</a>
+      </p>
+      <p>
+        Created by <a href="https://happysathya.com" target="_blank" style="color: var(--accent-blue);">Sathya</a> &bull; <a href="https://www.linkedin.com/in/happysathya/" target="_blank" style="color: var(--accent-blue);">LinkedIn</a>
       </p>
     </footer>
   </div>

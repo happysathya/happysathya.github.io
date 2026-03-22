@@ -5,7 +5,9 @@ This is a static technical blog hosted on GitHub Pages at `happysathya.github.io
 ## Structure
 
 - `index.html` - Blog index with search functionality
-- Individual HTML files for each post (e.g., `claude-code-extensibility-guide.html`)
+- Individual HTML files for each post (e.g., `the-juke-joint-had-a-door.html`)
+- `robots.txt` - Crawler permissions, points to sitemap
+- `sitemap.xml` - Lists all pages for search engine indexing
 
 ## Search Setup
 
@@ -34,6 +36,19 @@ const posts = [
 ];
 ```
 
+4. Add SEO meta tags in the `<head>` of the new post:
+
+```html
+<meta name="description" content="Brief description for search results.">
+<link rel="canonical" href="https://happysathya.github.io/my-new-post.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Post Title">
+<meta property="og:description" content="Brief description for search results.">
+<meta property="og:url" content="https://happysathya.github.io/my-new-post.html">
+```
+
+5. Add the new URL to `sitemap.xml`
+
 ### Post Object Fields
 
 | Field | Description |
@@ -41,8 +56,17 @@ const posts = [
 | `url` | Filename of the post HTML file |
 | `date` | Display date (e.g., "Jan 2026") |
 | `tag` | Category/topic tag (displayed in blue) |
+| `category` | Either `'technical'` or `'personal'` — used for filter buttons on the index |
 | `title` | Full post title |
 | `excerpt` | 1-2 sentence summary for the card |
+
+## SEO
+
+All pages include:
+- `<meta name="description">` for search result snippets
+- `<link rel="canonical">` to prevent duplicate content
+- Open Graph tags (`og:type`, `og:title`, `og:description`, `og:url`) for social sharing
+- `robots.txt` and `sitemap.xml` at the repo root
 
 ## Styling
 
