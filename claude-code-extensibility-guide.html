@@ -12,927 +12,720 @@
     <meta property="og:url" content="https://happysathya.github.io/claude-code-extensibility-guide.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #0f0f12;
-            --bg-secondary: #18181d;
-            --bg-tertiary: #1f1f26;
-            --bg-code: #13131a;
-            --text-primary: #e8e8ed;
-            --text-secondary: #9898a6;
-            --text-muted: #6b6b7a;
-            --accent-orange: #ff7b54;
-            --accent-blue: #5a9fff;
-            --accent-purple: #b490ff;
-            --accent-green: #5ce0a8;
-            --accent-yellow: #ffd15c;
-            --accent-pink: #ff8ab5;
-            --border-color: #2a2a35;
-            --border-subtle: #232330;
+            --bg-0: #07090c;
+            --bg-1: #0c1014;
+            --bg-2: #11161c;
+            --line: rgba(255, 255, 255, 0.06);
+            --line-2: rgba(255, 255, 255, 0.12);
+            --ink-0: #f4f7fa;
+            --ink-1: #b6c2cf;
+            --ink-2: #7a8693;
+            --ink-3: #4a5563;
+            --cy-1: #d9f99d;
+            --cy-2: #a3e635;
+            --cy-3: #65a30d;
+            --accent-rgb: 163, 230, 53;
+            --cy-glow: rgba(var(--accent-rgb), 0.35);
+            --font-body: 'Urbanist', ui-sans-serif, system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+            --radius-sm: 6px;
+            --radius: 14px;
+            --radius-lg: 22px;
+            --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+            --dur-fast: 180ms;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.7;
-            font-size: 15px;
+            background: var(--bg-0);
+            color: var(--ink-0);
+            font-family: var(--font-body);
+            font-size: 17px;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 60px 40px;
-        }
+        a { color: var(--cy-2); text-decoration: none; }
+
+        .mono { font-family: var(--font-mono); letter-spacing: 0.02em; }
+        .meta { font-family: var(--font-mono); font-size: 13px; color: var(--ink-2); letter-spacing: 0.06em; text-transform: uppercase; }
+        .idx { font-family: var(--font-mono); font-size: 12px; color: var(--cy-2); letter-spacing: 0.1em; }
+
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        @media (min-width: 768px) { .container { padding: 0 48px; } }
+
+        .container-prose { width: 100%; max-width: 920px; margin: 0 auto; padding: 0 24px; }
+        @media (min-width: 768px) { .container-prose { padding: 0 48px; } }
 
         /* Header */
-        header {
-            text-align: center;
-            margin-bottom: 80px;
-            padding-bottom: 60px;
-            border-bottom: 1px solid var(--border-color);
-        }
+        .site-header { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(7, 9, 12, 0.72); border-bottom: 1px solid var(--line); }
+        .header-row { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .brand-mark { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, var(--cy-2), var(--cy-3)); display: grid; place-items: center; font-family: var(--font-mono); font-weight: 600; font-size: 16px; color: #001014; letter-spacing: -0.02em; }
+        .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+        .brand-text .name { font-size: 15px; font-weight: 600; color: var(--ink-0); letter-spacing: -0.01em; }
+        .brand-text .sub { font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); letter-spacing: 0.08em; }
+        .nav-links { display: none; align-items: center; gap: 4px; }
+        @media (min-width: 900px) { .nav-links { display: flex; } }
+        .nav-link { display: inline-flex; align-items: baseline; gap: 6px; padding: 8px 14px; border-radius: 999px; color: var(--ink-1); text-decoration: none; transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
+        .nav-link:hover { color: var(--cy-1); }
+        .nav-link.active { color: var(--cy-1); background: rgba(var(--accent-rgb), 0.08); }
+        .nav-link .num { font-family: var(--font-mono); font-size: 10px; color: var(--ink-3); }
+        .nav-link.active .num { color: var(--cy-2); }
+        .nav-link .label { font-size: 14px; font-weight: 500; }
+        .header-right { display: none; align-items: center; gap: 12px; }
+        @media (min-width: 900px) { .header-right { display: flex; } }
+        #utc-clock { font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); }
+        .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cy-1); box-shadow: 0 0 10px var(--cy-1); animation: pulse-dot 2.2s infinite; }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 
-        header h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--accent-orange), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        /* Hero */
+        .section { padding: 120px 0; position: relative; }
+        .section.first { padding-top: 160px; padding-bottom: 60px; overflow: hidden; }
+        .ambient-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+        .ambient-glow { position: absolute; inset: 0; background-image: radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb), 0.12), transparent 55%); }
+        .ambient-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 48px 48px; -webkit-mask-image: radial-gradient(ellipse at center top, black 30%, transparent 80%); mask-image: radial-gradient(ellipse at center top, black 30%, transparent 80%); }
+        .section .container, .section .container-prose { position: relative; }
 
-        header .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-        }
+        .kicker { display: flex; align-items: center; gap: 12px; }
+        .kicker .line { width: 24px; height: 1px; background: var(--cy-2); opacity: 0.5; }
 
-        /* Section styling */
-        section {
-            margin-bottom: 70px;
-        }
+        .display-h1 { font-size: clamp(36px, 5.5vw, 64px); line-height: 1.02; font-weight: 600; letter-spacing: -0.03em; text-wrap: balance; color: var(--ink-0); margin-top: 24px; max-width: 860px; }
+        .display-h2 { font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; color: var(--ink-0); }
+        .display-h3 { font-size: 22px; line-height: 1.25; font-weight: 600; letter-spacing: -0.01em; color: var(--ink-0); }
+        .lede { font-size: 21px; line-height: 1.45; color: var(--ink-1); font-weight: 400; margin-top: 18px; max-width: 760px; }
 
-        h2 {
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        /* Article */
+        article { padding: 24px 0 48px; font-size: 17px; line-height: 1.7; color: var(--ink-1); }
+        article > section { margin-bottom: 80px; }
 
-        h2::before {
-            content: '';
-            display: inline-block;
-            width: 4px;
-            height: 28px;
-            background: var(--accent-orange);
-            border-radius: 2px;
-        }
-
-        h3 {
-            font-size: 1.15rem;
+        article h2 {
+            font-size: clamp(28px, 3vw, 36px);
+            line-height: 1.15;
             font-weight: 600;
-            margin: 35px 0 18px 0;
-            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            color: var(--ink-0);
+            margin-bottom: 28px;
+            text-wrap: balance;
+        }
+        article h2 .h2-num {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--cy-2);
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+            font-weight: 500;
         }
 
-        h4 {
-            font-size: 1rem;
+        article h3 {
+            font-size: 20px;
             font-weight: 600;
-            margin: 25px 0 12px 0;
-            color: var(--accent-blue);
+            color: var(--ink-0);
+            margin: 36px 0 16px;
+            letter-spacing: -0.01em;
         }
 
-        p {
-            margin-bottom: 18px;
-            color: var(--text-secondary);
+        article h4 {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--cy-2);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin: 24px 0 12px;
+            font-weight: 500;
         }
+
+        article p { margin-bottom: 16px; color: var(--ink-1); }
+
+        article p code, article li code {
+            font-family: var(--font-mono);
+            font-size: 0.88em;
+            color: var(--cy-1);
+            background: rgba(var(--accent-rgb), 0.08);
+            padding: 2px 6px;
+            border-radius: 4px;
+            letter-spacing: 0.01em;
+        }
+
+        article strong { color: var(--ink-0); font-weight: 600; }
 
         /* Diagrams */
         .diagram {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 35px;
-            margin: 30px 0;
+            background: var(--bg-1);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin: 28px 0;
             overflow-x: auto;
         }
 
         .diagram-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--cy-2);
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--accent-orange);
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 24px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--line);
         }
 
-        .diagram-content {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        /* Architecture Diagram */
-        .arch-diagram {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 25px;
-        }
-
+        /* Architecture diagram */
+        .arch-diagram { display: flex; flex-direction: column; align-items: center; gap: 24px; }
         .arch-core {
-            background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-code));
-            border: 2px solid var(--accent-orange);
-            border-radius: 10px;
+            background: var(--bg-2);
+            border: 1.5px solid var(--cy-2);
+            border-radius: var(--radius);
             padding: 20px 40px;
             text-align: center;
-            width: 100%;
-            max-width: 500px;
+            width: 100%; max-width: 500px;
         }
-
         .arch-core-label {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--accent-orange);
-            margin-bottom: 8px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--cy-2);
+            letter-spacing: 0.12em;
+            margin-bottom: 6px;
+            font-weight: 500;
         }
+        .arch-core-sub { font-size: 14px; color: var(--ink-2); }
 
-        .arch-core-sub {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
+        .arch-arrows { display: flex; justify-content: center; gap: 80px; }
+        .arch-arrow { display: flex; flex-direction: column; align-items: center; color: var(--ink-3); }
+        .arch-arrow svg { width: 22px; height: 38px; }
 
-        .arch-arrows {
-            display: flex;
-            justify-content: center;
-            gap: 80px;
-        }
-
-        .arch-arrow {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-muted);
-        }
-
-        .arch-arrow svg {
-            width: 24px;
-            height: 40px;
-        }
-
-        .arch-mechanisms {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            width: 100%;
-        }
+        .arch-mechanisms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; }
+        @media (max-width: 700px) { .arch-mechanisms { grid-template-columns: 1fr; } .arch-arrows { gap: 24px; } }
 
         .mechanism-box {
-            background: var(--bg-code);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
+            background: var(--bg-2);
+            border: 1px solid var(--line-2);
+            border-radius: var(--radius);
             padding: 20px;
             text-align: center;
         }
-
-        .mechanism-box.plugins { border-top: 3px solid var(--accent-purple); }
-        .mechanism-box.subagents { border-top: 3px solid var(--accent-blue); }
-        .mechanism-box.skills { border-top: 3px solid var(--accent-green); }
+        .mechanism-box.plugins { border-top: 2px solid var(--cy-2); }
+        .mechanism-box.subagents { border-top: 2px solid var(--cy-1); }
+        .mechanism-box.skills { border-top: 2px solid var(--cy-3); }
 
         .mechanism-name {
-            font-weight: 700;
-            font-size: 0.95rem;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 0.12em;
             margin-bottom: 4px;
+            font-weight: 500;
         }
+        .mechanism-box.plugins .mechanism-name { color: var(--cy-2); }
+        .mechanism-box.subagents .mechanism-name { color: var(--cy-1); }
+        .mechanism-box.skills .mechanism-name { color: var(--cy-3); }
 
-        .mechanism-box.plugins .mechanism-name { color: var(--accent-purple); }
-        .mechanism-box.subagents .mechanism-name { color: var(--accent-blue); }
-        .mechanism-box.skills .mechanism-name { color: var(--accent-green); }
+        .mechanism-role { font-size: 13px; color: var(--ink-3); margin-bottom: 14px; }
 
-        .mechanism-role {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-        }
-
-        .mechanism-features {
-            text-align: left;
-            font-size: 0.8rem;
-        }
-
+        .mechanism-features { text-align: left; font-size: 14px; }
         .mechanism-features li {
-            color: var(--text-secondary);
+            color: var(--ink-1);
             margin-bottom: 6px;
             list-style: none;
-            padding-left: 16px;
+            padding-left: 14px;
             position: relative;
         }
-
-        .mechanism-features li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--text-muted);
-        }
+        .mechanism-features li::before { content: '·'; position: absolute; left: 4px; color: var(--cy-2); font-weight: 700; }
 
         .relationship-summary {
-            background: var(--bg-code);
-            border-radius: 8px;
+            background: var(--bg-2);
+            border-radius: var(--radius);
             padding: 20px;
             margin-top: 20px;
+            border: 1px solid var(--line);
         }
-
         .relationship-summary h5 {
-            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--ink-3);
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-muted);
             margin-bottom: 12px;
+            font-weight: 500;
         }
-
-        .relationship-summary ul {
-            list-style: none;
-        }
-
+        .relationship-summary ul { list-style: none; }
         .relationship-summary li {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
+            font-size: 14px;
+            color: var(--ink-1);
             margin-bottom: 6px;
             padding-left: 20px;
             position: relative;
         }
+        .relationship-summary li::before { content: '→'; position: absolute; left: 0; color: var(--cy-2); }
 
-        .relationship-summary li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--accent-orange);
-        }
-
-        /* Directory Tree */
-        .tree {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            line-height: 1.8;
-        }
-
-        .tree-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-        }
-
-        .tree-indent {
-            color: var(--border-color);
-            white-space: pre;
-        }
-
-        .tree-name {
-            color: var(--text-primary);
-        }
-
-        .tree-name.folder { color: var(--accent-blue); }
-        .tree-name.file { color: var(--text-secondary); }
-        .tree-name.required { color: var(--accent-orange); }
-        .tree-name.marker { color: var(--accent-purple); }
-
-        .tree-comment {
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            margin-left: 8px;
-        }
+        /* Tree */
+        .tree { font-family: var(--font-mono); font-size: 13px; line-height: 1.85; }
+        .tree-item { display: flex; align-items: flex-start; gap: 6px; }
+        .tree-indent { color: var(--ink-3); white-space: pre; }
+        .tree-name { color: var(--ink-1); }
+        .tree-name.folder { color: var(--cy-1); }
+        .tree-name.file { color: var(--ink-1); }
+        .tree-name.required { color: var(--cy-2); }
+        .tree-name.marker { color: var(--cy-3); }
+        .tree-comment { color: var(--ink-3); font-size: 12px; margin-left: 8px; font-style: italic; }
 
         /* Code blocks */
         .code-block {
-            background: var(--bg-code);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
+            background: var(--bg-2);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
             overflow: hidden;
             margin: 20px 0;
         }
-
         .code-header {
-            background: var(--bg-tertiary);
-            padding: 10px 18px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-1);
+            padding: 12px 18px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--ink-2);
+            border-bottom: 1px solid var(--line);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            letter-spacing: 0.04em;
         }
-
         .code-lang {
-            background: var(--bg-code);
-            padding: 3px 8px;
+            background: rgba(var(--accent-rgb), 0.1);
+            padding: 2px 8px;
             border-radius: 4px;
-            font-size: 0.7rem;
+            font-size: 10px;
             text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--cy-2);
         }
-
-        .code-content {
-            padding: 20px;
-            overflow-x: auto;
-        }
-
+        .code-content { padding: 18px; overflow-x: auto; }
         pre {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.82rem;
-            line-height: 1.65;
-            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--ink-1);
         }
 
-        .code-comment { color: var(--text-muted); }
-        .code-keyword { color: var(--accent-purple); }
-        .code-string { color: var(--accent-green); }
-        .code-property { color: var(--accent-blue); }
-        .code-value { color: var(--accent-orange); }
-        .code-annotation { color: var(--accent-yellow); }
+        .code-comment { color: var(--ink-3); font-style: italic; }
+        .code-keyword { color: var(--cy-1); font-weight: 500; }
+        .code-string { color: var(--cy-2); }
+        .code-property { color: var(--ink-0); font-weight: 500; }
+        .code-value { color: var(--cy-3); }
+        .code-annotation { color: var(--ink-3); font-style: italic; }
 
-        /* Flow Diagrams */
-        .flow-diagram {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-
+        /* Flow diagrams */
+        .flow-diagram { display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .flow-step {
-            background: var(--bg-code);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 16px 24px;
-            width: 100%;
-            max-width: 550px;
+            background: var(--bg-2);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            width: 100%; max-width: 600px;
         }
-
         .flow-step.highlight {
-            border-color: var(--accent-orange);
-            background: linear-gradient(135deg, rgba(255, 123, 84, 0.08), transparent);
+            border-color: rgba(var(--accent-rgb), 0.4);
+            background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.06), transparent 60%);
         }
-
-        .flow-step-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
+        .flow-step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
         .flow-step-number {
-            background: var(--accent-orange);
-            color: var(--bg-primary);
-            width: 24px;
-            height: 24px;
+            background: var(--cy-2);
+            color: #001014;
+            width: 26px; height: 26px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-
-        .flow-step-title {
+            display: grid; place-items: center;
+            font-family: var(--font-mono);
+            font-size: 12px;
             font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-primary);
+            flex-shrink: 0;
         }
-
-        .flow-step-content {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            padding-left: 34px;
-        }
-
-        .flow-step-content ul {
-            list-style: none;
-            margin-top: 8px;
-        }
-
-        .flow-step-content li {
-            margin-bottom: 4px;
-            padding-left: 16px;
-            position: relative;
-        }
-
-        .flow-step-content li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--text-muted);
-        }
-
-        .flow-arrow {
-            color: var(--text-muted);
-            font-size: 1.2rem;
-        }
+        .flow-step-title { font-weight: 600; font-size: 15px; color: var(--ink-0); }
+        .flow-step-content { font-size: 14px; color: var(--ink-1); padding-left: 38px; }
+        .flow-step-content ul { list-style: none; margin-top: 8px; }
+        .flow-step-content li { margin-bottom: 4px; padding-left: 14px; position: relative; }
+        .flow-step-content li::before { content: '·'; position: absolute; left: 4px; color: var(--cy-2); font-weight: 700; }
+        .flow-arrow { color: var(--ink-3); font-size: 18px; }
 
         /* Tables */
         .table-wrapper {
             overflow-x: auto;
-            margin: 25px 0;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
+            margin: 24px 0;
+            border-radius: var(--radius);
+            border: 1px solid var(--line);
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-
-        thead {
-            background: var(--bg-tertiary);
-        }
-
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        thead { background: var(--bg-1); }
         th {
             text-align: left;
             padding: 14px 18px;
-            font-weight: 600;
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        td {
-            padding: 12px 18px;
-            border-bottom: 1px solid var(--border-subtle);
-            color: var(--text-secondary);
-            vertical-align: top;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tbody tr:hover {
-            background: var(--bg-secondary);
-        }
-
-        td:first-child {
+            font-family: var(--font-mono);
             font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .check { color: var(--accent-green); }
-        .cross { color: var(--accent-pink); }
-
-        /* Decision Tree */
-        .decision-tree {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .decision-node {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-        }
-
-        .decision-question {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 14px 20px;
-            flex: 1;
-        }
-
-        .decision-question-text {
-            font-size: 0.9rem;
-            color: var(--text-primary);
-            margin-bottom: 12px;
-        }
-
-        .decision-branches {
-            display: flex;
-            gap: 16px;
-        }
-
-        .decision-branch {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-        }
-
-        .decision-branch.yes { color: var(--accent-green); }
-        .decision-branch.no { color: var(--text-muted); }
-
-        .decision-result {
-            background: var(--bg-code);
-            border: 2px solid;
-            border-radius: 8px;
-            padding: 10px 16px;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-
-        .decision-result.plugin { border-color: var(--accent-purple); color: var(--accent-purple); }
-        .decision-result.subagent { border-color: var(--accent-blue); color: var(--accent-blue); }
-        .decision-result.skill { border-color: var(--accent-green); color: var(--accent-green); }
-        .decision-result.other { border-color: var(--text-muted); color: var(--text-muted); }
-
-        /* Best Practices */
-        .best-practices {
-            display: grid;
-            gap: 20px;
-        }
-
-        .practice-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 24px;
-        }
-
-        .practice-card h4 {
-            margin-top: 0;
-            margin-bottom: 16px;
-            font-size: 1rem;
-        }
-
-        .practice-columns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .practice-do, .practice-dont {
-            font-size: 0.85rem;
-        }
-
-        .practice-do h5, .practice-dont h5 {
-            font-size: 0.75rem;
+            color: var(--cy-2);
+            border-bottom: 1px solid var(--line);
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.08em;
+        }
+        td {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--line);
+            color: var(--ink-1);
+            vertical-align: top;
+        }
+        tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: var(--bg-1); }
+        td:first-child { color: var(--ink-0); font-weight: 500; }
+
+        .check { color: var(--cy-2); font-weight: 700; }
+        .cross { color: var(--ink-3); }
+
+        /* Decision tree */
+        .decision-tree { display: flex; flex-direction: column; gap: 12px; }
+        .decision-node { display: flex; align-items: flex-start; gap: 12px; }
+        .decision-question { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 20px; flex: 1; }
+        .decision-question-text { font-size: 15px; color: var(--ink-0); margin-bottom: 12px; }
+        .decision-branches { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .decision-branch { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; }
+        .decision-branch.yes { color: var(--cy-2); }
+        .decision-branch.no { color: var(--ink-3); }
+        .decision-result {
+            background: var(--bg-1);
+            border: 1.5px solid;
+            border-radius: 8px;
+            padding: 6px 14px;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+        }
+        .decision-result.plugin { border-color: var(--cy-2); color: var(--cy-2); }
+        .decision-result.subagent { border-color: var(--cy-1); color: var(--cy-1); }
+        .decision-result.skill { border-color: var(--cy-3); color: var(--cy-3); }
+        .decision-result.other { border-color: var(--ink-3); color: var(--ink-3); }
+
+        /* Best practices */
+        .best-practices { display: grid; gap: 16px; }
+        .practice-card { background: var(--bg-1); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 28px; }
+        .practice-card .practice-title {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            font-weight: 500;
+        }
+        .practice-card.plugins .practice-title { color: var(--cy-2); }
+        .practice-card.subagents .practice-title { color: var(--cy-1); }
+        .practice-card.skills .practice-title { color: var(--cy-3); }
+        .practice-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media (max-width: 700px) { .practice-columns { grid-template-columns: 1fr; } }
+
+        .practice-do, .practice-dont { font-size: 14px; }
+        .practice-do h5, .practice-dont h5 {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
             margin-bottom: 12px;
+            font-weight: 500;
         }
-
-        .practice-do h5 { color: var(--accent-green); }
-        .practice-dont h5 { color: var(--accent-pink); }
-
-        .practice-do ul, .practice-dont ul {
-            list-style: none;
-        }
-
+        .practice-do h5 { color: var(--cy-2); }
+        .practice-dont h5 { color: var(--ink-3); }
+        .practice-do ul, .practice-dont ul { list-style: none; }
         .practice-do li, .practice-dont li {
             margin-bottom: 8px;
             padding-left: 20px;
             position: relative;
-            color: var(--text-secondary);
+            color: var(--ink-1);
+            line-height: 1.55;
         }
+        .practice-do li::before { content: '+'; position: absolute; left: 0; color: var(--cy-2); font-family: var(--font-mono); font-weight: 600; }
+        .practice-dont li::before { content: '−'; position: absolute; left: 0; color: var(--ink-3); font-family: var(--font-mono); font-weight: 600; }
 
-        .practice-do li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--accent-green);
-        }
+        .error-table td:first-child { color: var(--cy-2); font-family: var(--font-mono); font-size: 13px; }
 
-        .practice-dont li::before {
-            content: '✗';
-            position: absolute;
-            left: 0;
-            color: var(--accent-pink);
-        }
-
-        /* Error table */
-        .error-table td:first-child {
-            color: var(--accent-pink);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-        }
-
-        /* Skill levels diagram */
-        .skill-levels {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
+        /* Skill levels */
+        .skill-levels { display: flex; flex-direction: column; gap: 14px; }
         .skill-level {
-            background: var(--bg-code);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
+            background: var(--bg-2);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
             padding: 20px;
             position: relative;
         }
-
-        .skill-level::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            border-radius: 10px 0 0 10px;
-        }
-
-        .skill-level.level-1::before { background: var(--accent-green); }
-        .skill-level.level-2::before { background: var(--accent-blue); }
-        .skill-level.level-3::before { background: var(--accent-purple); }
-
-        .skill-level-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
+        .skill-level::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: var(--radius) 0 0 var(--radius); }
+        .skill-level.level-1::before { background: var(--cy-1); }
+        .skill-level.level-2::before { background: var(--cy-2); }
+        .skill-level.level-3::before { background: var(--cy-3); }
+        .skill-level-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
         .skill-level-badge {
-            font-size: 0.7rem;
-            font-weight: 700;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 4px 10px;
+            letter-spacing: 0.1em;
+            padding: 3px 8px;
             border-radius: 4px;
         }
-
-        .level-1 .skill-level-badge { background: rgba(92, 224, 168, 0.15); color: var(--accent-green); }
-        .level-2 .skill-level-badge { background: rgba(90, 159, 255, 0.15); color: var(--accent-blue); }
-        .level-3 .skill-level-badge { background: rgba(180, 144, 255, 0.15); color: var(--accent-purple); }
-
-        .skill-level-title {
-            font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--text-primary);
-        }
-
-        .skill-level-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-        }
-
+        .level-1 .skill-level-badge { background: rgba(217, 249, 157, 0.12); color: var(--cy-1); }
+        .level-2 .skill-level-badge { background: rgba(var(--accent-rgb), 0.12); color: var(--cy-2); }
+        .level-3 .skill-level-badge { background: rgba(101, 163, 13, 0.18); color: var(--cy-3); }
+        .skill-level-title { font-weight: 600; font-size: 15px; color: var(--ink-0); }
+        .skill-level-desc { font-size: 14px; color: var(--ink-1); margin-bottom: 10px; }
         .skill-level-code {
-            background: var(--bg-primary);
-            border-radius: 6px;
+            background: var(--bg-0);
+            border-radius: var(--radius-sm);
             padding: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.78rem;
-            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--ink-2);
             overflow-x: auto;
+            white-space: pre;
+            line-height: 1.6;
         }
+        .connector { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 4px 0; color: var(--ink-3); font-family: var(--font-mono); font-size: 12px; }
+        .connector-line { height: 1px; width: 40px; background: var(--line-2); }
 
-        .connector {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 8px 0;
-            color: var(--text-muted);
-            font-size: 0.8rem;
+        .use-case-table td:nth-child(2) { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; }
+        .use-case-table .plugin { color: var(--cy-2); }
+        .use-case-table .subagent { color: var(--cy-1); }
+        .use-case-table .skill { color: var(--cy-3); }
+
+        .callout-critical {
+            margin-top: 20px;
+            background: rgba(var(--accent-rgb), 0.06);
+            border: 1px solid rgba(var(--accent-rgb), 0.2);
+            border-radius: var(--radius);
+            padding: 18px 20px;
         }
-
-        .connector-line {
-            height: 1px;
-            width: 40px;
-            background: var(--border-color);
+        .callout-critical h5 {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: var(--cy-2);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-weight: 500;
         }
+        .callout-critical ul { list-style: none; }
+        .callout-critical li { font-size: 14px; color: var(--ink-1); margin-bottom: 6px; padding-left: 20px; position: relative; }
+        .callout-critical li::before { content: '!'; position: absolute; left: 0; color: var(--cy-2); font-family: var(--font-mono); font-weight: 600; }
 
-        /* Use case mapping */
-        .use-case-table td:nth-child(2) {
-            font-weight: 600;
-        }
+        /* CTA strip */
+        .cta-strip { position: relative; overflow: hidden; border-radius: var(--radius-lg); padding: 48px 32px; border: 1px solid var(--line-2); background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.08) 0%, transparent 100%); margin-top: 56px; }
+        @media (min-width: 768px) { .cta-strip { padding: 64px 48px; } }
+        .cta-strip::before { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 40px 40px; -webkit-mask-image: radial-gradient(ellipse at 80% 50%, black 20%, transparent 75%); mask-image: radial-gradient(ellipse at 80% 50%, black 20%, transparent 75%); }
+        .cta-strip .row { position: relative; display: flex; flex-direction: column; gap: 32px; }
+        @media (min-width: 768px) { .cta-strip .row { flex-direction: row; align-items: center; justify-content: space-between; } }
+        .cta-strip h3 { font-size: clamp(22px, 2.6vw, 28px); line-height: 1.2; font-weight: 600; letter-spacing: -0.01em; color: var(--ink-0); max-width: 640px; }
+        .cta-strip p { margin-top: 12px; max-width: 520px; color: var(--ink-1); font-size: 17px; }
 
-        .use-case-table .plugin { color: var(--accent-purple); }
-        .use-case-table .subagent { color: var(--accent-blue); }
-        .use-case-table .skill { color: var(--accent-green); }
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 999px; font: 500 15px/1 var(--font-body); letter-spacing: 0.01em; border: 1px solid var(--line-2); color: var(--ink-0); background: transparent; cursor: pointer; text-decoration: none; transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); }
+        .btn:hover { background: rgba(255, 255, 255, 0.04); border-color: var(--ink-2); }
+        .btn-primary { border-color: transparent; background: var(--cy-2); color: #001014; box-shadow: 0 0 0 0 var(--cy-glow); }
+        .btn-primary:hover { background: var(--cy-1); box-shadow: 0 0 40px -6px var(--cy-glow); }
 
         /* Footer */
-        footer {
-            margin-top: 80px;
-            padding-top: 40px;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-        }
+        footer { margin-top: 100px; border-top: 1px solid var(--line); background: var(--bg-0); }
+        .footer-grid { padding: 64px 0 40px; display: grid; gap: 48px; grid-template-columns: 1fr; }
+        @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr; } }
+        .footer-col-title { margin-bottom: 20px; color: var(--ink-3); }
+        .footer-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .footer-list a { color: var(--ink-1); font-size: 14px; transition: color var(--dur-fast) var(--ease); }
+        .footer-list a:hover { color: var(--cy-1); }
+        .footer-entity { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .footer-entity li { font-family: var(--font-mono); font-size: 12px; color: var(--ink-2); }
+        .footer-bottom { padding: 24px 0 48px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+        @media (min-width: 640px) { .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; } }
+        .footer-bottom .copy, .footer-bottom .version { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.06em; text-transform: uppercase; }
 
-        footer p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        /* Print styles */
-        @media print {
-            body {
-                background: white;
-                color: #1a1a1a;
-            }
-            
-            .container {
-                max-width: 100%;
-                padding: 20px;
-            }
-            
-            .diagram, .code-block, .flow-step, .skill-level, .practice-card {
-                break-inside: avoid;
-            }
-            
-            section {
-                break-inside: avoid;
-            }
-        }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
     </style>
 </head>
 <body>
+
+<header class="site-header">
     <div class="container">
-        <nav style="margin-bottom: 30px;">
-            <a href="index.html" style="color: var(--accent-orange); text-decoration: none; font-size: 0.9rem;">← Blog</a>
-        </nav>
-        <header>
-            <h1>Claude Code Extensibility Guide</h1>
-            <p class="subtitle">A visual guide to Plugins, Subagents, and Skills—the three mechanisms for extending Claude Code's capabilities</p>
-        </header>
+        <div class="header-row">
+            <a href="/" class="brand" aria-label="Happysathya home">
+                <span class="brand-mark">hs</span>
+                <span class="brand-text">
+                    <span class="name">Happysathya</span>
+                    <span class="sub">BLOG · BE</span>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link"><span class="num">00</span><span class="label">Blog</span></a>
+                <a href="https://happysathya.com" target="_blank" rel="noopener" class="nav-link"><span class="num">01</span><span class="label">happysathya.com ↗</span></a>
+                <a href="https://www.linkedin.com/in/happysathya/" target="_blank" rel="noopener" class="nav-link"><span class="num">02</span><span class="label">LinkedIn ↗</span></a>
+            </nav>
+            <div class="header-right">
+                <span id="utc-clock">--:--:-- UTC</span>
+                <span aria-hidden="true" class="pulse-dot"></span>
+            </div>
+        </div>
+    </div>
+</header>
 
-        <!-- Section 1: Overview -->
-        <section id="overview">
-            <h2>How the Three Mechanisms Relate</h2>
-            <p>Claude Code offers three complementary systems for extending its capabilities. Plugins bundle multiple extensions into shareable packages, subagents provide specialized AI assistants with isolated context, and skills inject task-specific instructions on demand.</p>
+<section class="section first">
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="ambient-glow"></div>
+        <div class="ambient-grid"></div>
+    </div>
+    <div class="container-prose">
+        <div class="kicker">
+            <span class="idx">a01</span>
+            <span class="line"></span>
+            <span class="meta">CLAUDE CODE · JAN 2026</span>
+        </div>
+        <h1 class="display-h1">Claude Code Extensibility Guide</h1>
+        <p class="lede">A visual guide to Plugins, Subagents, and Skills -- the three mechanisms for extending Claude Code's capabilities.</p>
+    </div>
+</section>
 
-            <div class="diagram">
-                <div class="diagram-title">Architecture Overview</div>
-                <div class="arch-diagram">
-                    <div class="arch-core">
-                        <div class="arch-core-label">CLAUDE CODE CORE</div>
-                        <div class="arch-core-sub">System Prompt + Tools</div>
+<article class="container-prose">
+
+    <section id="overview">
+        <h2><span class="h2-num">01 / 07</span>How the Three Mechanisms Relate</h2>
+        <p>Claude Code offers three complementary systems for extending its capabilities. Plugins bundle multiple extensions into shareable packages, subagents provide specialized AI assistants with isolated context, and skills inject task-specific instructions on demand.</p>
+
+        <div class="diagram">
+            <div class="diagram-title">// Architecture overview</div>
+            <div class="arch-diagram">
+                <div class="arch-core">
+                    <div class="arch-core-label">CLAUDE CODE CORE</div>
+                    <div class="arch-core-sub">System Prompt + Tools</div>
+                </div>
+                <div class="arch-arrows">
+                    <div class="arch-arrow"><svg viewBox="0 0 24 40" fill="none"><path d="M12 0 L12 30 M6 24 L12 30 L18 24" stroke="currentColor" stroke-width="2"/></svg></div>
+                    <div class="arch-arrow"><svg viewBox="0 0 24 40" fill="none"><path d="M12 0 L12 30 M6 24 L12 30 L18 24" stroke="currentColor" stroke-width="2"/></svg></div>
+                    <div class="arch-arrow"><svg viewBox="0 0 24 40" fill="none"><path d="M12 0 L12 30 M6 24 L12 30 L18 24" stroke="currentColor" stroke-width="2"/></svg></div>
+                </div>
+                <div class="arch-mechanisms">
+                    <div class="mechanism-box plugins">
+                        <div class="mechanism-name">PLUGINS</div>
+                        <div class="mechanism-role">Bundles</div>
+                        <ul class="mechanism-features">
+                            <li>Commands</li>
+                            <li>Agents</li>
+                            <li>Skills</li>
+                            <li>Hooks</li>
+                            <li>MCP servers</li>
+                        </ul>
                     </div>
-                    
-                    <div class="arch-arrows">
-                        <div class="arch-arrow">
-                            <svg viewBox="0 0 24 40" fill="none">
-                                <path d="M12 0 L12 30 M6 24 L12 30 L18 24" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="arch-arrow">
-                            <svg viewBox="0 0 24 40" fill="none">
-                                <path d="M12 0 L12 30 M6 24 L12 30 L18 24" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <div class="arch-arrow">
-                            <svg viewBox="0 0 24 40" fill="none">
-                                <path d="M12 0 L12 30 M6 24 L12 30 L18 24" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
+                    <div class="mechanism-box subagents">
+                        <div class="mechanism-name">SUBAGENTS</div>
+                        <div class="mechanism-role">Delegates</div>
+                        <ul class="mechanism-features">
+                            <li>Own context</li>
+                            <li>Own tools</li>
+                            <li>Specialized expertise</li>
+                            <li>Resumable sessions</li>
+                        </ul>
                     </div>
-
-                    <div class="arch-mechanisms">
-                        <div class="mechanism-box plugins">
-                            <div class="mechanism-name">PLUGINS</div>
-                            <div class="mechanism-role">Bundles</div>
-                            <ul class="mechanism-features">
-                                <li>Commands</li>
-                                <li>Agents</li>
-                                <li>Skills</li>
-                                <li>Hooks</li>
-                                <li>MCP servers</li>
-                            </ul>
-                        </div>
-                        <div class="mechanism-box subagents">
-                            <div class="mechanism-name">SUBAGENTS</div>
-                            <div class="mechanism-role">Delegates</div>
-                            <ul class="mechanism-features">
-                                <li>Own context</li>
-                                <li>Own tools</li>
-                                <li>Specialized expertise</li>
-                                <li>Resumable sessions</li>
-                            </ul>
-                        </div>
-                        <div class="mechanism-box skills">
-                            <div class="mechanism-name">SKILLS</div>
-                            <div class="mechanism-role">Expands</div>
-                            <ul class="mechanism-features">
-                                <li>Prompt injection</li>
-                                <li>Scripts</li>
-                                <li>References</li>
-                                <li>Tool scoping</li>
-                            </ul>
-                        </div>
+                    <div class="mechanism-box skills">
+                        <div class="mechanism-name">SKILLS</div>
+                        <div class="mechanism-role">Expands</div>
+                        <ul class="mechanism-features">
+                            <li>Prompt injection</li>
+                            <li>Scripts</li>
+                            <li>References</li>
+                            <li>Tool scoping</li>
+                        </ul>
                     </div>
                 </div>
-
-                <div class="relationship-summary">
-                    <h5>Relationship Summary</h5>
-                    <ul>
-                        <li>Plugins <strong>contain</strong> subagents, skills, hooks, commands, and MCP servers</li>
-                        <li>Subagents <strong>can load</strong> skills via the "skills:" frontmatter field</li>
-                        <li>Skills <strong>expand</strong> prompts with context-specific instructions</li>
-                        <li>All three <strong>can be used</strong> independently or together</li>
-                    </ul>
-                </div>
             </div>
-        </section>
-
-        <!-- Section 2: Directory Structure -->
-        <section id="directory">
-            <h2>Directory Structure</h2>
-            <p>All extensions live under the <code>.claude/</code> directory at your project root, with optional user-level extensions in <code>~/.claude/</code>.</p>
-
-            <div class="diagram">
-                <div class="diagram-title">Project Directory Layout</div>
-                <div class="tree">
-                    <div class="tree-item"><span class="tree-name folder">project-root/</span></div>
-                    <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">.claude/</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   ├── </span><span class="tree-name folder">agents/</span><span class="tree-comment">← Project subagents</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │   ├── </span><span class="tree-name file">code-reviewer.md</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │   ├── </span><span class="tree-name file">test-runner.md</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │   └── </span><span class="tree-name file">debugger.md</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   ├── </span><span class="tree-name folder">skills/</span><span class="tree-comment">← Project skills</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │   ├── </span><span class="tree-name folder">pdf/</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │   │   ├── </span><span class="tree-name required">SKILL.md</span><span class="tree-comment">← Required: skill definition</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │   │   ├── </span><span class="tree-name folder">scripts/</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │   │   └── </span><span class="tree-name folder">references/</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │   └── </span><span class="tree-name folder">commit-messages/</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │       └── </span><span class="tree-name required">SKILL.md</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   ├── </span><span class="tree-name folder">commands/</span><span class="tree-comment">← Slash commands</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │   ├── </span><span class="tree-name file">deploy.md</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │   └── </span><span class="tree-name file">lint.md</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   │</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name file">settings.json</span></div>
-                    <div class="tree-item"><span class="tree-indent">│</span></div>
-                    <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name marker">.claude-plugin/</span><span class="tree-comment">← Plugin marker (if this IS a plugin)</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name required">plugin.json</span><span class="tree-comment">← Plugin manifest</span></div>
-                    <div class="tree-item"><span class="tree-indent">│</span></div>
-                    <div class="tree-item"><span class="tree-indent">└── </span><span class="tree-name file">.mcp.json</span><span class="tree-comment">← MCP server configs</span></div>
-                </div>
+            <div class="relationship-summary">
+                <h5>// Relationship summary</h5>
+                <ul>
+                    <li>Plugins <strong>contain</strong> subagents, skills, hooks, commands, and MCP servers</li>
+                    <li>Subagents <strong>can load</strong> skills via the "skills:" frontmatter field</li>
+                    <li>Skills <strong>expand</strong> prompts with context-specific instructions</li>
+                    <li>All three <strong>can be used</strong> independently or together</li>
+                </ul>
             </div>
+        </div>
+    </section>
 
-            <div class="diagram">
-                <div class="diagram-title">User-Level Locations (~/.claude/)</div>
-                <div class="tree">
-                    <div class="tree-item"><span class="tree-name folder">~/.claude/</span><span class="tree-comment">← Applies to all projects</span></div>
-                    <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">agents/</span><span class="tree-comment">← User subagents</span></div>
-                    <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">skills/</span><span class="tree-comment">← User skills</span></div>
-                    <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">commands/</span><span class="tree-comment">← User slash commands</span></div>
-                    <div class="tree-item"><span class="tree-indent">└── </span><span class="tree-name file">settings.json</span></div>
-                </div>
+    <section id="directory">
+        <h2><span class="h2-num">02 / 07</span>Directory Structure</h2>
+        <p>All extensions live under the <code>.claude/</code> directory at your project root, with optional user-level extensions in <code>~/.claude/</code>.</p>
+
+        <div class="diagram">
+            <div class="diagram-title">// Project directory layout</div>
+            <div class="tree">
+                <div class="tree-item"><span class="tree-name folder">project-root/</span></div>
+                <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">.claude/</span></div>
+                <div class="tree-item"><span class="tree-indent">│   ├── </span><span class="tree-name folder">agents/</span><span class="tree-comment">project subagents</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │   ├── </span><span class="tree-name file">code-reviewer.md</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │   ├── </span><span class="tree-name file">test-runner.md</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │   └── </span><span class="tree-name file">debugger.md</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │</span></div>
+                <div class="tree-item"><span class="tree-indent">│   ├── </span><span class="tree-name folder">skills/</span><span class="tree-comment">project skills</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │   ├── </span><span class="tree-name folder">pdf/</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │   │   ├── </span><span class="tree-name required">SKILL.md</span><span class="tree-comment">required: skill definition</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │   │   ├── </span><span class="tree-name folder">scripts/</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │   │   └── </span><span class="tree-name folder">references/</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │   └── </span><span class="tree-name folder">commit-messages/</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │       └── </span><span class="tree-name required">SKILL.md</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │</span></div>
+                <div class="tree-item"><span class="tree-indent">│   ├── </span><span class="tree-name folder">commands/</span><span class="tree-comment">slash commands</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │   ├── </span><span class="tree-name file">deploy.md</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │   └── </span><span class="tree-name file">lint.md</span></div>
+                <div class="tree-item"><span class="tree-indent">│   │</span></div>
+                <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name file">settings.json</span></div>
+                <div class="tree-item"><span class="tree-indent">│</span></div>
+                <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name marker">.claude-plugin/</span><span class="tree-comment">plugin marker (if this IS a plugin)</span></div>
+                <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name required">plugin.json</span><span class="tree-comment">plugin manifest</span></div>
+                <div class="tree-item"><span class="tree-indent">│</span></div>
+                <div class="tree-item"><span class="tree-indent">└── </span><span class="tree-name file">.mcp.json</span><span class="tree-comment">MCP server configs</span></div>
             </div>
-        </section>
+        </div>
 
-        <!-- Section 3: Subagents -->
-        <section id="subagents">
-            <h2>Subagents: Specialized AI Assistants</h2>
-            <p>Subagents are pre-configured AI personalities that Claude delegates tasks to. Each subagent operates in its own context window with specific tools and expertise.</p>
-
-            <h3>What Problem They Solve</h3>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Problem</th>
-                            <th>How Subagents Help</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Context pollution</td>
-                            <td>Each runs in isolated context window</td>
-                        </tr>
-                        <tr>
-                            <td>Repetitive instructions</td>
-                            <td>Define expertise once, reuse everywhere</td>
-                        </tr>
-                        <tr>
-                            <td>Tool sprawl</td>
-                            <td>Limit each subagent to relevant tools only</td>
-                        </tr>
-                        <tr>
-                            <td>Team consistency</td>
-                            <td>Share via version control</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="diagram">
+            <div class="diagram-title">// User-level locations (~/.claude/)</div>
+            <div class="tree">
+                <div class="tree-item"><span class="tree-name folder">~/.claude/</span><span class="tree-comment">applies to all projects</span></div>
+                <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">agents/</span><span class="tree-comment">user subagents</span></div>
+                <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">skills/</span><span class="tree-comment">user skills</span></div>
+                <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">commands/</span><span class="tree-comment">user slash commands</span></div>
+                <div class="tree-item"><span class="tree-indent">└── </span><span class="tree-name file">settings.json</span></div>
             </div>
+        </div>
+    </section>
 
-            <h3>File Format</h3>
-            <div class="code-block">
-                <div class="code-header">
-                    <span>.claude/agents/code-reviewer.md</span>
-                    <span class="code-lang">markdown</span>
-                </div>
-                <div class="code-content">
+    <section id="subagents">
+        <h2><span class="h2-num">03 / 07</span>Subagents: Specialized AI Assistants</h2>
+        <p>Subagents are pre-configured AI personalities that Claude delegates tasks to. Each subagent operates in its own context window with specific tools and expertise.</p>
+
+        <h3>What problem they solve</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Problem</th><th>How Subagents Help</th></tr></thead>
+                <tbody>
+                    <tr><td>Context pollution</td><td>Each runs in isolated context window</td></tr>
+                    <tr><td>Repetitive instructions</td><td>Define expertise once, reuse everywhere</td></tr>
+                    <tr><td>Tool sprawl</td><td>Limit each subagent to relevant tools only</td></tr>
+                    <tr><td>Team consistency</td><td>Share via version control</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>File format</h3>
+        <div class="code-block">
+            <div class="code-header">
+                <span>.claude/agents/code-reviewer.md</span>
+                <span class="code-lang">markdown</span>
+            </div>
+            <div class="code-content">
 <pre><span class="code-comment">---</span>
 <span class="code-property">name:</span> <span class="code-string">code-reviewer</span>              <span class="code-annotation"># REQUIRED: lowercase-with-hyphens</span>
 <span class="code-property">description:</span> <span class="code-keyword">></span>                   <span class="code-annotation"># REQUIRED: When to invoke this agent</span>
-  <span class="code-string">Expert code reviewer. Use PROACTIVELY after any code changes 
+  <span class="code-string">Expert code reviewer. Use PROACTIVELY after any code changes
   to check quality and security.</span>
 <span class="code-property">tools:</span> <span class="code-string">Read, Grep, Glob, Bash</span>    <span class="code-annotation"># OPTIONAL: Limits available tools</span>
 <span class="code-property">model:</span> <span class="code-string">inherit</span>                   <span class="code-annotation"># OPTIONAL: sonnet|opus|haiku|inherit</span>
@@ -958,82 +751,56 @@ You are a senior code reviewer ensuring high standards.
 
 <span class="code-keyword">## Output Format</span>
 Organize feedback by priority:
-- 🔴 <span class="code-value">Critical</span> (must fix before merge)
-- 🟡 <span class="code-value">Warning</span> (should address)
-- 🟢 <span class="code-value">Suggestion</span> (nice to have)</pre>
+- <span class="code-value">Critical</span> (must fix before merge)
+- <span class="code-value">Warning</span> (should address)
+- <span class="code-value">Suggestion</span> (nice to have)</pre>
+            </div>
+        </div>
+
+        <h3>Invocation flow</h3>
+        <div class="diagram">
+            <div class="diagram-title">// Subagent invocation flow</div>
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="flow-step-header"><span class="flow-step-number">1</span><span class="flow-step-title">User Request or Automatic Match</span></div>
+                    <div class="flow-step-content">User: "Review my code changes" → Claude matches task to agent description</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <div class="flow-step-header"><span class="flow-step-number">2</span><span class="flow-step-title">Discovery</span></div>
+                    <div class="flow-step-content">Scans .claude/agents/ for matching agent configs</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step highlight">
+                    <div class="flow-step-header"><span class="flow-step-number">3</span><span class="flow-step-title">Spawn Subagent</span></div>
+                    <div class="flow-step-content">
+                        <ul>
+                            <li>Create new context window (isolated)</li>
+                            <li>Load system prompt from markdown body</li>
+                            <li>Restrict tools to: Read, Grep, Glob, Bash</li>
+                            <li>Auto-load skill: project-conventions</li>
+                            <li>Assign agentId for resume capability</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <div class="flow-step-header"><span class="flow-step-number">4</span><span class="flow-step-title">Execute</span></div>
+                    <div class="flow-step-content">Subagent runs git diff, reads files, applies checklist, formats findings</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <div class="flow-step-header"><span class="flow-step-number">5</span><span class="flow-step-title">Return Results</span></div>
+                    <div class="flow-step-content">Review findings injected into main conversation; agentId saved for potential resume</div>
                 </div>
             </div>
+        </div>
 
-            <h3>Invocation Flow</h3>
-            <div class="diagram">
-                <div class="diagram-title">Subagent Invocation Flow</div>
-                <div class="flow-diagram">
-                    <div class="flow-step">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">1</span>
-                            <span class="flow-step-title">User Request or Automatic Match</span>
-                        </div>
-                        <div class="flow-step-content">
-                            User: "Review my code changes" → Claude matches task to agent description
-                        </div>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-step">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">2</span>
-                            <span class="flow-step-title">Discovery</span>
-                        </div>
-                        <div class="flow-step-content">
-                            Scans .claude/agents/ for matching agent configs
-                        </div>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-step highlight">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">3</span>
-                            <span class="flow-step-title">Spawn Subagent</span>
-                        </div>
-                        <div class="flow-step-content">
-                            <ul>
-                                <li>Create new context window (isolated)</li>
-                                <li>Load system prompt from markdown body</li>
-                                <li>Restrict tools to: Read, Grep, Glob, Bash</li>
-                                <li>Auto-load skill: project-conventions</li>
-                                <li>Assign agentId for resume capability</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-step">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">4</span>
-                            <span class="flow-step-title">Execute</span>
-                        </div>
-                        <div class="flow-step-content">
-                            Subagent runs git diff, reads files, applies checklist, formats findings
-                        </div>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-step">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">5</span>
-                            <span class="flow-step-title">Return Results</span>
-                        </div>
-                        <div class="flow-step-content">
-                            Review findings injected into main conversation; agentId saved for potential resume
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <h3>Real-World Examples</h3>
-            <h4>Test Runner Subagent</h4>
-            <div class="code-block">
-                <div class="code-header">
-                    <span>.claude/agents/test-runner.md</span>
-                    <span class="code-lang">markdown</span>
-                </div>
-                <div class="code-content">
+        <h3>Real-world examples</h3>
+        <h4>Test runner subagent</h4>
+        <div class="code-block">
+            <div class="code-header"><span>.claude/agents/test-runner.md</span><span class="code-lang">markdown</span></div>
+            <div class="code-content">
 <pre><span class="code-comment">---</span>
 <span class="code-property">name:</span> <span class="code-string">test-runner</span>
 <span class="code-property">description:</span> <span class="code-string">Run tests and fix failures. Use PROACTIVELY after code changes.</span>
@@ -1053,16 +820,13 @@ You are a test automation expert.
 
 <span class="code-keyword">## Key Principle</span>
 Never modify tests to make them pass. Fix the code they're testing.</pre>
-                </div>
             </div>
+        </div>
 
-            <h4>Documentation Generator Subagent</h4>
-            <div class="code-block">
-                <div class="code-header">
-                    <span>.claude/agents/doc-generator.md</span>
-                    <span class="code-lang">markdown</span>
-                </div>
-                <div class="code-content">
+        <h4>Documentation generator subagent</h4>
+        <div class="code-block">
+            <div class="code-header"><span>.claude/agents/doc-generator.md</span><span class="code-lang">markdown</span></div>
+            <div class="code-content">
 <pre><span class="code-comment">---</span>
 <span class="code-property">name:</span> <span class="code-string">doc-generator</span>
 <span class="code-property">description:</span> <span class="code-string">Generate API docs and README files. Use when creating documentation.</span>
@@ -1083,27 +847,22 @@ You are a technical writer specializing in developer documentation.
 - Installation options
 - Configuration reference
 - Common use cases with examples</pre>
-                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Section 4: Skills -->
-        <section id="skills">
-            <h2>Skills: On-Demand Prompt Expansion</h2>
-            <p>Skills are markdown files that teach Claude specific tasks. Unlike subagents, skills expand the current context rather than spawning new assistants. They use progressive disclosure to load only what's needed.</p>
+    <section id="skills">
+        <h2><span class="h2-num">04 / 07</span>Skills: On-Demand Prompt Expansion</h2>
+        <p>Skills are markdown files that teach Claude specific tasks. Unlike subagents, skills expand the current context rather than spawning new assistants. They use progressive disclosure to load only what's needed.</p>
 
-            <h3>The Three-Level Architecture</h3>
-            <div class="diagram">
-                <div class="diagram-title">Skill Progressive Disclosure</div>
-                <div class="skill-levels">
-                    <div class="skill-level level-1">
-                        <div class="skill-level-header">
-                            <span class="skill-level-badge">Level 1</span>
-                            <span class="skill-level-title">Metadata (~100 tokens per skill)</span>
-                        </div>
-                        <div class="skill-level-desc">Loaded at startup into system prompt</div>
-                        <div class="skill-level-code">
-&lt;available_skills&gt;
+        <h3>The three-level architecture</h3>
+        <div class="diagram">
+            <div class="diagram-title">// Skill progressive disclosure</div>
+            <div class="skill-levels">
+                <div class="skill-level level-1">
+                    <div class="skill-level-header"><span class="skill-level-badge">Level 1</span><span class="skill-level-title">Metadata (~100 tokens per skill)</span></div>
+                    <div class="skill-level-desc">Loaded at startup into system prompt</div>
+                    <div class="skill-level-code">&lt;available_skills&gt;
   &lt;skill&gt;
     &lt;n&gt;pdf&lt;/n&gt;
     &lt;description&gt;Extract and analyze PDFs&lt;/description&gt;
@@ -1112,67 +871,41 @@ You are a technical writer specializing in developer documentation.
     &lt;n&gt;commit-messages&lt;/n&gt;
     &lt;description&gt;Generate git commit messages&lt;/description&gt;
   &lt;/skill&gt;
-&lt;/available_skills&gt;
-                        </div>
-                    </div>
-
-                    <div class="connector">
-                        <span class="connector-line"></span>
-                        <span>User: "Read this PDF" → Claude matches → invokes Skill tool</span>
-                        <span class="connector-line"></span>
-                    </div>
-
-                    <div class="skill-level level-2">
-                        <div class="skill-level-header">
-                            <span class="skill-level-badge">Level 2</span>
-                            <span class="skill-level-title">Instructions (loaded on-demand)</span>
-                        </div>
-                        <div class="skill-level-desc">Full SKILL.md body injected into context</div>
-                        <div class="skill-level-code">
-Base Path: /Users/dev/.claude/skills/pdf/
+&lt;/available_skills&gt;</div>
+                </div>
+                <div class="connector"><span class="connector-line"></span><span>User: "Read this PDF" → Claude matches → invokes Skill tool</span><span class="connector-line"></span></div>
+                <div class="skill-level level-2">
+                    <div class="skill-level-header"><span class="skill-level-badge">Level 2</span><span class="skill-level-title">Instructions (loaded on-demand)</span></div>
+                    <div class="skill-level-desc">Full SKILL.md body injected into context</div>
+                    <div class="skill-level-code">Base Path: /Users/dev/.claude/skills/pdf/
 
 # PDF Processing Skill
 
 Use the extract_text.py script:
     python3 {baseDir}/scripts/extract_text.py &lt;input&gt;
 
-After extraction, summarize key points...
-                        </div>
-                    </div>
+After extraction, summarize key points...</div>
+                </div>
+                <div class="connector"><span class="connector-line"></span><span>Claude needs more info → Reads reference file</span><span class="connector-line"></span></div>
+                <div class="skill-level level-3">
+                    <div class="skill-level-header"><span class="skill-level-badge">Level 3</span><span class="skill-level-title">Resources (loaded as-needed)</span></div>
+                    <div class="skill-level-desc">Claude uses Read/Bash to access bundled files</div>
+                    <div class="skill-level-code">&gt; Bash: python3 /path/to/scripts/extract_text.py report.pdf
+&gt; Read: /path/to/references/forms.md
 
-                    <div class="connector">
-                        <span class="connector-line"></span>
-                        <span>Claude needs more info → Reads reference file</span>
-                        <span class="connector-line"></span>
-                    </div>
-
-                    <div class="skill-level level-3">
-                        <div class="skill-level-header">
-                            <span class="skill-level-badge">Level 3</span>
-                            <span class="skill-level-title">Resources (loaded as-needed)</span>
-                        </div>
-                        <div class="skill-level-desc">Claude uses Read/Bash to access bundled files</div>
-                        <div class="skill-level-code">
-> Bash: python3 /path/to/scripts/extract_text.py report.pdf
-> Read: /path/to/references/forms.md
-
-Script OUTPUT enters context (not source code)
-                        </div>
-                    </div>
+Script OUTPUT enters context (not source code)</div>
                 </div>
             </div>
+        </div>
 
-            <h3>File Format</h3>
-            <div class="code-block">
-                <div class="code-header">
-                    <span>.claude/skills/code-review/SKILL.md</span>
-                    <span class="code-lang">markdown</span>
-                </div>
-                <div class="code-content">
+        <h3>File format</h3>
+        <div class="code-block">
+            <div class="code-header"><span>.claude/skills/code-review/SKILL.md</span><span class="code-lang">markdown</span></div>
+            <div class="code-content">
 <pre><span class="code-comment">---</span>
 <span class="code-property">name:</span> <span class="code-string">code-review</span>                          <span class="code-annotation"># REQUIRED: max 64 chars</span>
 <span class="code-property">description:</span> <span class="code-keyword">></span>                             <span class="code-annotation"># REQUIRED: max 1024 chars</span>
-  <span class="code-string">Reviews code for quality, security, and best practices. 
+  <span class="code-string">Reviews code for quality, security, and best practices.
   Use when reviewing PRs or analyzing code changes.</span>
 <span class="code-property">allowed-tools:</span> <span class="code-string">"Bash(git:*),Read,Grep"</span>     <span class="code-annotation"># OPTIONAL: Tool permissions</span>
 <span class="code-property">model:</span> <span class="code-string">"claude-opus-4-20250514"</span>            <span class="code-annotation"># OPTIONAL: Model override</span>
@@ -1204,79 +937,53 @@ For each changed file, verify:
 
 <span class="code-keyword">## Resources</span>
 For advanced patterns, see [{baseDir}/references/patterns.md]</pre>
+            </div>
+        </div>
+
+        <h3>Invocation flow</h3>
+        <div class="diagram">
+            <div class="diagram-title">// Skill invocation flow</div>
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="flow-step-header"><span class="flow-step-number">1</span><span class="flow-step-title">User Request</span></div>
+                    <div class="flow-step-content">User: "Review my PR" → Claude scans &lt;available_skills&gt; in system prompt</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <div class="flow-step-header"><span class="flow-step-number">2</span><span class="flow-step-title">Tool Call</span></div>
+                    <div class="flow-step-content">{ "name": "Skill", "input": { "command": "code-review" } }</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step highlight">
+                    <div class="flow-step-header"><span class="flow-step-number">3</span><span class="flow-step-title">Skill Activation</span></div>
+                    <div class="flow-step-content">
+                        <ul>
+                            <li>Show user: "The 'code-review' skill is loading"</li>
+                            <li>Read full SKILL.md from .claude/skills/code-review/</li>
+                            <li>Inject into context with {baseDir} resolved</li>
+                            <li>Apply tool restrictions: Bash(git:*),Read,Grep</li>
+                            <li>Switch model if specified</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <div class="flow-step-header"><span class="flow-step-number">4</span><span class="flow-step-title">Execute in Current Context</span></div>
+                    <div class="flow-step-content">Claude follows injected instructions—runs scripts, reads references. Script OUTPUT enters context, not source code (efficient!)</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <div class="flow-step-header"><span class="flow-step-number">5</span><span class="flow-step-title">Response</span></div>
+                    <div class="flow-step-content">Results in same conversation (no new context window)</div>
                 </div>
             </div>
+        </div>
 
-            <h3>Invocation Flow</h3>
-            <div class="diagram">
-                <div class="diagram-title">Skill Invocation Flow</div>
-                <div class="flow-diagram">
-                    <div class="flow-step">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">1</span>
-                            <span class="flow-step-title">User Request</span>
-                        </div>
-                        <div class="flow-step-content">
-                            User: "Review my PR" → Claude scans &lt;available_skills&gt; in system prompt
-                        </div>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-step">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">2</span>
-                            <span class="flow-step-title">Tool Call</span>
-                        </div>
-                        <div class="flow-step-content">
-                            { "name": "Skill", "input": { "command": "code-review" } }
-                        </div>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-step highlight">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">3</span>
-                            <span class="flow-step-title">Skill Activation</span>
-                        </div>
-                        <div class="flow-step-content">
-                            <ul>
-                                <li>Show user: "The 'code-review' skill is loading"</li>
-                                <li>Read full SKILL.md from .claude/skills/code-review/</li>
-                                <li>Inject into context with {baseDir} resolved</li>
-                                <li>Apply tool restrictions: Bash(git:*),Read,Grep</li>
-                                <li>Switch model if specified</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-step">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">4</span>
-                            <span class="flow-step-title">Execute in Current Context</span>
-                        </div>
-                        <div class="flow-step-content">
-                            Claude follows injected instructions—runs scripts, reads references. Script OUTPUT enters context, not source code (efficient!)
-                        </div>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-step">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">5</span>
-                            <span class="flow-step-title">Response</span>
-                        </div>
-                        <div class="flow-step-content">
-                            Results in same conversation (no new context window)
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <h3>Real-World Examples</h3>
-            <h4>Commit Message Generator</h4>
-            <div class="code-block">
-                <div class="code-header">
-                    <span>.claude/skills/commit-messages/SKILL.md</span>
-                    <span class="code-lang">markdown</span>
-                </div>
-                <div class="code-content">
+        <h3>Real-world examples</h3>
+        <h4>Commit message generator</h4>
+        <div class="code-block">
+            <div class="code-header"><span>.claude/skills/commit-messages/SKILL.md</span><span class="code-lang">markdown</span></div>
+            <div class="code-content">
 <pre><span class="code-comment">---</span>
 <span class="code-property">name:</span> <span class="code-string">commit-messages</span>
 <span class="code-property">description:</span> <span class="code-string">Generates conventional commit messages. Use when committing code.</span>
@@ -1306,16 +1013,13 @@ For advanced patterns, see [{baseDir}/references/patterns.md]</pre>
 2. Run `git diff --staged` for details
 3. Identify primary change type
 4. Generate message following format</pre>
-                </div>
             </div>
+        </div>
 
-            <h4>API Scaffolding Skill</h4>
-            <div class="code-block">
-                <div class="code-header">
-                    <span>.claude/skills/api-scaffold/SKILL.md</span>
-                    <span class="code-lang">markdown</span>
-                </div>
-                <div class="code-content">
+        <h4>API scaffolding skill</h4>
+        <div class="code-block">
+            <div class="code-header"><span>.claude/skills/api-scaffold/SKILL.md</span><span class="code-lang">markdown</span></div>
+            <div class="code-content">
 <pre><span class="code-comment">---</span>
 <span class="code-property">name:</span> <span class="code-string">api-scaffold</span>
 <span class="code-property">description:</span> <span class="code-string">Scaffold REST API endpoints with validation and tests.</span>
@@ -1345,68 +1049,64 @@ router.post('/', validate({Resource}Schema), async (req, res) => {
 
 export default router;
 ```</pre>
-                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Section 5: Plugins -->
-        <section id="plugins">
-            <h2>Plugins: Bundled Extensibility Packages</h2>
-            <p>Plugins are shareable packages that bundle multiple extensions (commands, subagents, skills, hooks, MCP servers) into installable units.</p>
+    <section id="plugins">
+        <h2><span class="h2-num">05 / 07</span>Plugins: Bundled Extensibility Packages</h2>
+        <p>Plugins are shareable packages that bundle multiple extensions (commands, subagents, skills, hooks, MCP servers) into installable units.</p>
 
-            <h3>Plugin Structure</h3>
-            <div class="diagram">
-                <div class="diagram-title">Plugin Directory Layout</div>
-                <div class="tree">
-                    <div class="tree-item"><span class="tree-name folder">my-plugin/</span></div>
-                    <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name marker">.claude-plugin/</span><span class="tree-comment">← REQUIRED: Plugin marker directory</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name required">plugin.json</span><span class="tree-comment">← REQUIRED: Manifest file</span></div>
-                    <div class="tree-item"><span class="tree-indent">│</span></div>
-                    <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">commands/</span><span class="tree-comment">← DEFAULT: Slash commands</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   ├── </span><span class="tree-name file">review.md</span><span class="tree-comment">→ /my-plugin:review</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name file">deploy.md</span><span class="tree-comment">→ /my-plugin:deploy</span></div>
-                    <div class="tree-item"><span class="tree-indent">│</span></div>
-                    <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">agents/</span><span class="tree-comment">← DEFAULT: Subagents</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   ├── </span><span class="tree-name file">security-reviewer.md</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name file">performance-tester.md</span></div>
-                    <div class="tree-item"><span class="tree-indent">│</span></div>
-                    <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">skills/</span><span class="tree-comment">← DEFAULT: Skills</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name folder">code-patterns/</span></div>
-                    <div class="tree-item"><span class="tree-indent">│       ├── </span><span class="tree-name required">SKILL.md</span></div>
-                    <div class="tree-item"><span class="tree-indent">│       └── </span><span class="tree-name folder">references/</span></div>
-                    <div class="tree-item"><span class="tree-indent">│</span></div>
-                    <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">hooks/</span><span class="tree-comment">← Hook configurations</span></div>
-                    <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name file">hooks.json</span></div>
-                    <div class="tree-item"><span class="tree-indent">│</span></div>
-                    <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">scripts/</span><span class="tree-comment">← Utility scripts</span></div>
-                    <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name file">.mcp.json</span><span class="tree-comment">← MCP server definitions</span></div>
-                    <div class="tree-item"><span class="tree-indent">└── </span><span class="tree-name file">README.md</span></div>
-                </div>
-                <div class="relationship-summary" style="margin-top: 25px; background: rgba(255, 123, 84, 0.08); border: 1px solid rgba(255, 123, 84, 0.2);">
-                    <h5 style="color: var(--accent-orange);">⚠️ Critical</h5>
-                    <ul>
-                        <li>commands/, agents/, skills/, hooks/ go at <strong>ROOT level</strong></li>
-                        <li>NOT inside .claude-plugin/ (common mistake!)</li>
-                    </ul>
-                </div>
+        <h3>Plugin structure</h3>
+        <div class="diagram">
+            <div class="diagram-title">// Plugin directory layout</div>
+            <div class="tree">
+                <div class="tree-item"><span class="tree-name folder">my-plugin/</span></div>
+                <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name marker">.claude-plugin/</span><span class="tree-comment">REQUIRED: plugin marker</span></div>
+                <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name required">plugin.json</span><span class="tree-comment">REQUIRED: manifest file</span></div>
+                <div class="tree-item"><span class="tree-indent">│</span></div>
+                <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">commands/</span><span class="tree-comment">DEFAULT: slash commands</span></div>
+                <div class="tree-item"><span class="tree-indent">│   ├── </span><span class="tree-name file">review.md</span><span class="tree-comment">→ /my-plugin:review</span></div>
+                <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name file">deploy.md</span><span class="tree-comment">→ /my-plugin:deploy</span></div>
+                <div class="tree-item"><span class="tree-indent">│</span></div>
+                <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">agents/</span><span class="tree-comment">DEFAULT: subagents</span></div>
+                <div class="tree-item"><span class="tree-indent">│   ├── </span><span class="tree-name file">security-reviewer.md</span></div>
+                <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name file">performance-tester.md</span></div>
+                <div class="tree-item"><span class="tree-indent">│</span></div>
+                <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">skills/</span><span class="tree-comment">DEFAULT: skills</span></div>
+                <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name folder">code-patterns/</span></div>
+                <div class="tree-item"><span class="tree-indent">│       ├── </span><span class="tree-name required">SKILL.md</span></div>
+                <div class="tree-item"><span class="tree-indent">│       └── </span><span class="tree-name folder">references/</span></div>
+                <div class="tree-item"><span class="tree-indent">│</span></div>
+                <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">hooks/</span><span class="tree-comment">hook configurations</span></div>
+                <div class="tree-item"><span class="tree-indent">│   └── </span><span class="tree-name file">hooks.json</span></div>
+                <div class="tree-item"><span class="tree-indent">│</span></div>
+                <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name folder">scripts/</span><span class="tree-comment">utility scripts</span></div>
+                <div class="tree-item"><span class="tree-indent">├── </span><span class="tree-name file">.mcp.json</span><span class="tree-comment">MCP server definitions</span></div>
+                <div class="tree-item"><span class="tree-indent">└── </span><span class="tree-name file">README.md</span></div>
             </div>
+            <div class="callout-critical">
+                <h5>// Critical</h5>
+                <ul>
+                    <li>commands/, agents/, skills/, hooks/ go at <strong>ROOT level</strong></li>
+                    <li>NOT inside .claude-plugin/ (common mistake!)</li>
+                </ul>
+            </div>
+        </div>
 
-            <h3>Plugin Manifest</h3>
-            <div class="code-block">
-                <div class="code-header">
-                    <span>.claude-plugin/plugin.json</span>
-                    <span class="code-lang">json</span>
-                </div>
-                <div class="code-content">
+        <h3>Plugin manifest</h3>
+        <div class="code-block">
+            <div class="code-header"><span>.claude-plugin/plugin.json</span><span class="code-lang">json</span></div>
+            <div class="code-content">
 <pre>{
-  <span class="code-comment">// ═══════════════════════════════════════════════════════════</span>
+  <span class="code-comment">// ─────────────────────────────────────────</span>
   <span class="code-comment">// REQUIRED FIELD</span>
-  <span class="code-comment">// ═══════════════════════════════════════════════════════════</span>
+  <span class="code-comment">// ─────────────────────────────────────────</span>
   <span class="code-property">"name"</span>: <span class="code-string">"code-quality-suite"</span>,        <span class="code-annotation">// Unique, kebab-case identifier</span>
 
-  <span class="code-comment">// ═══════════════════════════════════════════════════════════</span>
+  <span class="code-comment">// ─────────────────────────────────────────</span>
   <span class="code-comment">// METADATA (optional but recommended)</span>
-  <span class="code-comment">// ═══════════════════════════════════════════════════════════</span>
+  <span class="code-comment">// ─────────────────────────────────────────</span>
   <span class="code-property">"version"</span>: <span class="code-string">"1.2.0"</span>,                  <span class="code-annotation">// Semantic version</span>
   <span class="code-property">"description"</span>: <span class="code-string">"Code review, testing, and documentation tools"</span>,
   <span class="code-property">"author"</span>: {
@@ -1415,9 +1115,9 @@ export default router;
   },
   <span class="code-property">"license"</span>: <span class="code-string">"MIT"</span>,
 
-  <span class="code-comment">// ═══════════════════════════════════════════════════════════</span>
-  <span class="code-comment">// COMPONENT PATHS (optional - supplements default locations)</span>
-  <span class="code-comment">// ═══════════════════════════════════════════════════════════</span>
+  <span class="code-comment">// ─────────────────────────────────────────</span>
+  <span class="code-comment">// COMPONENT PATHS (optional)</span>
+  <span class="code-comment">// ─────────────────────────────────────────</span>
   <span class="code-property">"commands"</span>: <span class="code-string">"./extra-commands/"</span>,     <span class="code-annotation">// String or array</span>
   <span class="code-property">"agents"</span>: [                          <span class="code-annotation">// Multiple paths supported</span>
     <span class="code-string">"./agents/"</span>,
@@ -1430,380 +1130,267 @@ export default router;
     }
   }
 }</pre>
-                </div>
             </div>
+        </div>
 
-            <h3>Plugin Loading Flow</h3>
-            <div class="diagram">
-                <div class="diagram-title">Plugin Installation & Loading</div>
-                <div class="flow-diagram">
-                    <div class="flow-step">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">1</span>
-                            <span class="flow-step-title">Install Command</span>
-                        </div>
-                        <div class="flow-step-content">
-                            claude plugin install formatter@marketplace
-                        </div>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-step">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">2</span>
-                            <span class="flow-step-title">Discovery Phase</span>
-                        </div>
-                        <div class="flow-step-content">
-                            <ul>
-                                <li>Locate .claude-plugin/plugin.json</li>
-                                <li>Validate manifest schema</li>
-                                <li>Check for name conflicts</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-step">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">3</span>
-                            <span class="flow-step-title">Installation Phase</span>
-                        </div>
-                        <div class="flow-step-content">
-                            <ul>
-                                <li>Copy plugin directory to cache</li>
-                                <li>Resolve ${CLAUDE_PLUGIN_ROOT}</li>
-                                <li>Register with scope: user | project | local</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-step highlight">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">4</span>
-                            <span class="flow-step-title">Component Registration</span>
-                        </div>
-                        <div class="flow-step-content">
-                            <ul>
-                                <li><strong>Commands:</strong> commands/review.md → /code-quality-suite:review</li>
-                                <li><strong>Agents:</strong> agents/security-reviewer.md → Available for delegation</li>
-                                <li><strong>Skills:</strong> skills/code-patterns/SKILL.md → Added to &lt;available_skills&gt;</li>
-                                <li><strong>Hooks:</strong> hooks/hooks.json → Event handlers registered</li>
-                                <li><strong>MCP:</strong> .mcp.json → Servers started automatically</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="flow-arrow">↓</div>
-                    <div class="flow-step">
-                        <div class="flow-step-header">
-                            <span class="flow-step-number">5</span>
-                            <span class="flow-step-title">Ready to Use</span>
-                        </div>
-                        <div class="flow-step-content">
-                            Plugin components available in Claude Code
-                        </div>
+        <h3>Plugin loading flow</h3>
+        <div class="diagram">
+            <div class="diagram-title">// Plugin installation &amp; loading</div>
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="flow-step-header"><span class="flow-step-number">1</span><span class="flow-step-title">Install Command</span></div>
+                    <div class="flow-step-content">claude plugin install formatter@marketplace</div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <div class="flow-step-header"><span class="flow-step-number">2</span><span class="flow-step-title">Discovery Phase</span></div>
+                    <div class="flow-step-content"><ul><li>Locate .claude-plugin/plugin.json</li><li>Validate manifest schema</li><li>Check for name conflicts</li></ul></div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <div class="flow-step-header"><span class="flow-step-number">3</span><span class="flow-step-title">Installation Phase</span></div>
+                    <div class="flow-step-content"><ul><li>Copy plugin directory to cache</li><li>Resolve ${CLAUDE_PLUGIN_ROOT}</li><li>Register with scope: user | project | local</li></ul></div>
+                </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step highlight">
+                    <div class="flow-step-header"><span class="flow-step-number">4</span><span class="flow-step-title">Component Registration</span></div>
+                    <div class="flow-step-content">
+                        <ul>
+                            <li><strong>Commands:</strong> commands/review.md → /code-quality-suite:review</li>
+                            <li><strong>Agents:</strong> agents/security-reviewer.md → Available for delegation</li>
+                            <li><strong>Skills:</strong> skills/code-patterns/SKILL.md → Added to &lt;available_skills&gt;</li>
+                            <li><strong>Hooks:</strong> hooks/hooks.json → Event handlers registered</li>
+                            <li><strong>MCP:</strong> .mcp.json → Servers started automatically</li>
+                        </ul>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Section 6: Comparison -->
-        <section id="comparison">
-            <h2>Comparison: When to Use Each</h2>
-
-            <h3>Decision Flowchart</h3>
-            <div class="diagram">
-                <div class="diagram-title">Choosing the Right Mechanism</div>
-                <div class="decision-tree">
-                    <div class="decision-node">
-                        <div class="decision-question">
-                            <div class="decision-question-text">Do you need to bundle multiple extensions for sharing?</div>
-                            <div class="decision-branches">
-                                <span class="decision-branch yes">YES →</span>
-                                <div class="decision-result plugin">PLUGIN</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="decision-node">
-                        <div class="decision-question">
-                            <div class="decision-question-text">Does it need isolated context + task delegation?</div>
-                            <div class="decision-branches">
-                                <span class="decision-branch yes">YES →</span>
-                                <div class="decision-result subagent">SUBAGENT</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="decision-node">
-                        <div class="decision-question">
-                            <div class="decision-question-text">Need to inject instructions into current context?</div>
-                            <div class="decision-branches">
-                                <span class="decision-branch yes">YES →</span>
-                                <div class="decision-result skill">SKILL</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="decision-node">
-                        <div class="decision-question">
-                            <div class="decision-question-text">Simple prompt expansion?</div>
-                            <div class="decision-branches">
-                                <span class="decision-branch no">→</span>
-                                <div class="decision-result other">Slash Command or CLAUDE.md</div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="flow-arrow">↓</div>
+                <div class="flow-step">
+                    <div class="flow-step-header"><span class="flow-step-number">5</span><span class="flow-step-title">Ready to Use</span></div>
+                    <div class="flow-step-content">Plugin components available in Claude Code</div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <h3>Feature Comparison</h3>
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Feature</th>
-                            <th>Subagents</th>
-                            <th>Skills</th>
-                            <th>Plugins</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Primary purpose</td>
-                            <td>Delegate to specialists</td>
-                            <td>Expand prompts</td>
-                            <td>Bundle & share</td>
-                        </tr>
-                        <tr>
-                            <td>Context</td>
-                            <td>Own isolated window</td>
-                            <td>Same conversation</td>
-                            <td>Container for others</td>
-                        </tr>
-                        <tr>
-                            <td>Location</td>
-                            <td>.claude/agents/*.md</td>
-                            <td>.claude/skills/*/SKILL.md</td>
-                            <td>*/.claude-plugin/</td>
-                        </tr>
-                        <tr>
-                            <td>Invocation</td>
-                            <td>Auto or explicit</td>
-                            <td>Auto via Skill tool</td>
-                            <td>Contains other types</td>
-                        </tr>
-                        <tr>
-                            <td>Tool access</td>
-                            <td>Configurable per agent</td>
-                            <td>Scoped via allowed-tools</td>
-                            <td>Inherited by contents</td>
-                        </tr>
-                        <tr>
-                            <td>Model override</td>
-                            <td><span class="check">✓</span> Yes</td>
-                            <td><span class="check">✓</span> Yes</td>
-                            <td>Via contained agents</td>
-                        </tr>
-                        <tr>
-                            <td>Resumable</td>
-                            <td><span class="check">✓</span> Yes (agentId)</td>
-                            <td><span class="cross">✗</span> No</td>
-                            <td>N/A</td>
-                        </tr>
-                        <tr>
-                            <td>Shareability</td>
-                            <td>Copy .md file</td>
-                            <td>Copy skill folder</td>
-                            <td>Install from marketplace</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <section id="comparison">
+        <h2><span class="h2-num">06 / 07</span>Comparison: When to Use Each</h2>
+
+        <h3>Decision flowchart</h3>
+        <div class="diagram">
+            <div class="diagram-title">// Choosing the right mechanism</div>
+            <div class="decision-tree">
+                <div class="decision-node"><div class="decision-question"><div class="decision-question-text">Do you need to bundle multiple extensions for sharing?</div><div class="decision-branches"><span class="decision-branch yes">YES →</span><div class="decision-result plugin">PLUGIN</div></div></div></div>
+                <div class="decision-node"><div class="decision-question"><div class="decision-question-text">Does it need isolated context + task delegation?</div><div class="decision-branches"><span class="decision-branch yes">YES →</span><div class="decision-result subagent">SUBAGENT</div></div></div></div>
+                <div class="decision-node"><div class="decision-question"><div class="decision-question-text">Need to inject instructions into current context?</div><div class="decision-branches"><span class="decision-branch yes">YES →</span><div class="decision-result skill">SKILL</div></div></div></div>
+                <div class="decision-node"><div class="decision-question"><div class="decision-question-text">Simple prompt expansion?</div><div class="decision-branches"><span class="decision-branch no">→</span><div class="decision-result other">Slash Command or CLAUDE.md</div></div></div></div>
             </div>
+        </div>
 
-            <h3>Use Case Mapping</h3>
-            <div class="table-wrapper">
-                <table class="use-case-table">
-                    <thead>
-                        <tr>
-                            <th>Scenario</th>
-                            <th>Best Choice</th>
-                            <th>Why</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Code review automation</td>
-                            <td class="subagent">Subagent</td>
-                            <td>Needs isolated context, specialized tools</td>
-                        </tr>
-                        <tr>
-                            <td>Test generation</td>
-                            <td class="subagent">Subagent</td>
-                            <td>Complex multi-step process, tool access</td>
-                        </tr>
-                        <tr>
-                            <td>Documentation generation</td>
-                            <td class="skill">Skill or Subagent</td>
-                            <td>Skill for templates, subagent for full docs</td>
-                        </tr>
-                        <tr>
-                            <td>Linting/formatting</td>
-                            <td class="plugin">Plugin with hooks</td>
-                            <td>Triggers automatically after edits</td>
-                        </tr>
-                        <tr>
-                            <td>API scaffolding</td>
-                            <td class="skill">Skill</td>
-                            <td>Inject templates into current context</td>
-                        </tr>
-                        <tr>
-                            <td>Project conventions</td>
-                            <td class="skill">Skill</td>
-                            <td>Expand prompts with team standards</td>
-                        </tr>
-                        <tr>
-                            <td>Team tooling bundle</td>
-                            <td class="plugin">Plugin</td>
-                            <td>Distribute multiple extensions together</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
+        <h3>Feature comparison</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Feature</th><th>Subagents</th><th>Skills</th><th>Plugins</th></tr></thead>
+                <tbody>
+                    <tr><td>Primary purpose</td><td>Delegate to specialists</td><td>Expand prompts</td><td>Bundle &amp; share</td></tr>
+                    <tr><td>Context</td><td>Own isolated window</td><td>Same conversation</td><td>Container for others</td></tr>
+                    <tr><td>Location</td><td>.claude/agents/*.md</td><td>.claude/skills/*/SKILL.md</td><td>*/.claude-plugin/</td></tr>
+                    <tr><td>Invocation</td><td>Auto or explicit</td><td>Auto via Skill tool</td><td>Contains other types</td></tr>
+                    <tr><td>Tool access</td><td>Configurable per agent</td><td>Scoped via allowed-tools</td><td>Inherited by contents</td></tr>
+                    <tr><td>Model override</td><td><span class="check">✓</span> Yes</td><td><span class="check">✓</span> Yes</td><td>Via contained agents</td></tr>
+                    <tr><td>Resumable</td><td><span class="check">✓</span> Yes (agentId)</td><td><span class="cross">✗</span> No</td><td>N/A</td></tr>
+                    <tr><td>Shareability</td><td>Copy .md file</td><td>Copy skill folder</td><td>Install from marketplace</td></tr>
+                </tbody>
+            </table>
+        </div>
 
-        <!-- Section 7: Best Practices -->
-        <section id="best-practices">
-            <h2>Best Practices & Gotchas</h2>
+        <h3>Use case mapping</h3>
+        <div class="table-wrapper">
+            <table class="use-case-table">
+                <thead><tr><th>Scenario</th><th>Best Choice</th><th>Why</th></tr></thead>
+                <tbody>
+                    <tr><td>Code review automation</td><td class="subagent">Subagent</td><td>Needs isolated context, specialized tools</td></tr>
+                    <tr><td>Test generation</td><td class="subagent">Subagent</td><td>Complex multi-step process, tool access</td></tr>
+                    <tr><td>Documentation generation</td><td class="skill">Skill or Subagent</td><td>Skill for templates, subagent for full docs</td></tr>
+                    <tr><td>Linting/formatting</td><td class="plugin">Plugin with hooks</td><td>Triggers automatically after edits</td></tr>
+                    <tr><td>API scaffolding</td><td class="skill">Skill</td><td>Inject templates into current context</td></tr>
+                    <tr><td>Project conventions</td><td class="skill">Skill</td><td>Expand prompts with team standards</td></tr>
+                    <tr><td>Team tooling bundle</td><td class="plugin">Plugin</td><td>Distribute multiple extensions together</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-            <div class="best-practices">
-                <div class="practice-card">
-                    <h4 style="color: var(--accent-blue);">Subagents</h4>
-                    <div class="practice-columns">
-                        <div class="practice-do">
-                            <h5>Do</h5>
-                            <ul>
-                                <li>Use action-oriented descriptions: "Use PROACTIVELY after code changes"</li>
-                                <li>Keep agents focused on single responsibilities</li>
-                                <li>Version control project agents for team sharing</li>
-                                <li>Use skills: field to auto-load relevant skills</li>
-                            </ul>
-                        </div>
-                        <div class="practice-dont">
-                            <h5>Don't</h5>
-                            <ul>
-                                <li>Give vague descriptions like "helps with code"</li>
-                                <li>Grant unnecessary tools—least privilege</li>
-                                <li>Expect agents to spawn other agents (not allowed)</li>
-                                <li>Forget agents start with clean context (latency)</li>
-                            </ul>
-                        </div>
+    <section id="best-practices">
+        <h2><span class="h2-num">07 / 07</span>Best Practices &amp; Gotchas</h2>
+
+        <div class="best-practices">
+            <div class="practice-card subagents">
+                <div class="practice-title">// Subagents</div>
+                <div class="practice-columns">
+                    <div class="practice-do">
+                        <h5>Do</h5>
+                        <ul>
+                            <li>Use action-oriented descriptions: "Use PROACTIVELY after code changes"</li>
+                            <li>Keep agents focused on single responsibilities</li>
+                            <li>Version control project agents for team sharing</li>
+                            <li>Use skills: field to auto-load relevant skills</li>
+                        </ul>
                     </div>
-                </div>
-
-                <div class="practice-card">
-                    <h4 style="color: var(--accent-green);">Skills</h4>
-                    <div class="practice-columns">
-                        <div class="practice-do">
-                            <h5>Do</h5>
-                            <ul>
-                                <li>Write specific descriptions with keywords users would say</li>
-                                <li>Use {baseDir} for portable script paths</li>
-                                <li>Leverage progressive disclosure: keep SKILL.md under 5k tokens</li>
-                                <li>Put heavy logic in scripts/ (output enters context, not code)</li>
-                            </ul>
-                        </div>
-                        <div class="practice-dont">
-                            <h5>Don't</h5>
-                            <ul>
-                                <li>Put SKILL.md directly in skills/ (needs subdirectory)</li>
-                                <li>Use tabs in YAML frontmatter (spaces only)</li>
-                                <li>Hardcode absolute paths</li>
-                                <li>Forget chmod +x on scripts</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="practice-card">
-                    <h4 style="color: var(--accent-purple);">Plugins</h4>
-                    <div class="practice-columns">
-                        <div class="practice-do">
-                            <h5>Do</h5>
-                            <ul>
-                                <li>Put only plugin.json inside .claude-plugin/</li>
-                                <li>Use ${CLAUDE_PLUGIN_ROOT} for all internal paths</li>
-                                <li>Test with claude --debug to see loading errors</li>
-                                <li>Keep plugin self-contained (no ../ paths)</li>
-                            </ul>
-                        </div>
-                        <div class="practice-dont">
-                            <h5>Don't</h5>
-                            <ul>
-                                <li>Put commands/, agents/, skills/ inside .claude-plugin/</li>
-                                <li>Use reserved marketplace names</li>
-                                <li>Reference files outside plugin directory</li>
-                                <li>Forget to namespace commands (/plugin-name:command)</li>
-                            </ul>
-                        </div>
+                    <div class="practice-dont">
+                        <h5>Don't</h5>
+                        <ul>
+                            <li>Give vague descriptions like "helps with code"</li>
+                            <li>Grant unnecessary tools — least privilege</li>
+                            <li>Expect agents to spawn other agents (not allowed)</li>
+                            <li>Forget agents start with clean context (latency)</li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-            <h3>Common Errors & Fixes</h3>
-            <div class="table-wrapper">
-                <table class="error-table">
-                    <thead>
-                        <tr>
-                            <th>Error</th>
-                            <th>Cause</th>
-                            <th>Fix</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Subagent not appearing</td>
-                            <td>File not in agents/</td>
-                            <td>Move to .claude/agents/</td>
-                        </tr>
-                        <tr>
-                            <td>Skill not loading</td>
-                            <td>SKILL.md in wrong location</td>
-                            <td>Must be .claude/skills/&lt;n&gt;/SKILL.md</td>
-                        </tr>
-                        <tr>
-                            <td>Plugin commands missing</td>
-                            <td>Wrong directory structure</td>
-                            <td>Ensure commands/ at plugin root</td>
-                        </tr>
-                        <tr>
-                            <td>Hook not firing</td>
-                            <td>Script not executable</td>
-                            <td>chmod +x script.sh</td>
-                        </tr>
-                        <tr>
-                            <td>Path errors after install</td>
-                            <td>Absolute paths used</td>
-                            <td>Use ${CLAUDE_PLUGIN_ROOT} or {baseDir}</td>
-                        </tr>
-                        <tr>
-                            <td>YAML parse error</td>
-                            <td>Tabs or missing ---</td>
-                            <td>Use spaces, ensure frontmatter starts line 1</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="practice-card skills">
+                <div class="practice-title">// Skills</div>
+                <div class="practice-columns">
+                    <div class="practice-do">
+                        <h5>Do</h5>
+                        <ul>
+                            <li>Write specific descriptions with keywords users would say</li>
+                            <li>Use {baseDir} for portable script paths</li>
+                            <li>Leverage progressive disclosure: keep SKILL.md under 5k tokens</li>
+                            <li>Put heavy logic in scripts/ (output enters context, not code)</li>
+                        </ul>
+                    </div>
+                    <div class="practice-dont">
+                        <h5>Don't</h5>
+                        <ul>
+                            <li>Put SKILL.md directly in skills/ (needs subdirectory)</li>
+                            <li>Use tabs in YAML frontmatter (spaces only)</li>
+                            <li>Hardcode absolute paths</li>
+                            <li>Forget chmod +x on scripts</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </section>
 
-        <!-- Conclusion -->
-        <section id="conclusion">
-            <h2>Conclusion</h2>
-            <p>Claude Code's extensibility architecture follows a <strong>composition pattern</strong>: skills provide atomic capabilities, subagents combine skills with isolated context for complex tasks, and plugins bundle everything into distributable packages.</p>
-            <p>The key insight is that each mechanism operates at a different level of abstraction—<strong>skills expand prompts</strong>, <strong>subagents delegate execution</strong>, and <strong>plugins organize distribution</strong>.</p>
-            <p>For most coding workflows: start with <strong>skills</strong> for reusable instructions, add <strong>subagents</strong> when you need specialized delegation with isolated context, and wrap everything in a <strong>plugin</strong> when you need to share across teams or projects.</p>
-        </section>
+            <div class="practice-card plugins">
+                <div class="practice-title">// Plugins</div>
+                <div class="practice-columns">
+                    <div class="practice-do">
+                        <h5>Do</h5>
+                        <ul>
+                            <li>Put only plugin.json inside .claude-plugin/</li>
+                            <li>Use ${CLAUDE_PLUGIN_ROOT} for all internal paths</li>
+                            <li>Test with claude --debug to see loading errors</li>
+                            <li>Keep plugin self-contained (no ../ paths)</li>
+                        </ul>
+                    </div>
+                    <div class="practice-dont">
+                        <h5>Don't</h5>
+                        <ul>
+                            <li>Put commands/, agents/, skills/ inside .claude-plugin/</li>
+                            <li>Use reserved marketplace names</li>
+                            <li>Reference files outside plugin directory</li>
+                            <li>Forget to namespace commands (/plugin-name:command)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <footer>
-            <p><a href="index.html" style="color: var(--accent-orange); text-decoration: none;">← Blog</a></p>
-            <p><a href="https://happysathya.com" style="color: var(--text-muted); text-decoration: none;">happysathya.com</a></p>
-            <p>Created by <a href="https://happysathya.com" target="_blank" style="color: var(--accent-blue); text-decoration: none;">Sathya</a> • <a href="https://www.linkedin.com/in/happysathya/" target="_blank" style="color: var(--accent-blue); text-decoration: none;">LinkedIn</a></p>
-            <p>Generated with Claude • January 2026</p>
-        </footer>
+        <h3>Common errors &amp; fixes</h3>
+        <div class="table-wrapper">
+            <table class="error-table">
+                <thead><tr><th>Error</th><th>Cause</th><th>Fix</th></tr></thead>
+                <tbody>
+                    <tr><td>Subagent not appearing</td><td>File not in agents/</td><td>Move to .claude/agents/</td></tr>
+                    <tr><td>Skill not loading</td><td>SKILL.md in wrong location</td><td>Must be .claude/skills/&lt;n&gt;/SKILL.md</td></tr>
+                    <tr><td>Plugin commands missing</td><td>Wrong directory structure</td><td>Ensure commands/ at plugin root</td></tr>
+                    <tr><td>Hook not firing</td><td>Script not executable</td><td>chmod +x script.sh</td></tr>
+                    <tr><td>Path errors after install</td><td>Absolute paths used</td><td>Use ${CLAUDE_PLUGIN_ROOT} or {baseDir}</td></tr>
+                    <tr><td>YAML parse error</td><td>Tabs or missing ---</td><td>Use spaces, ensure frontmatter starts line 1</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="conclusion">
+        <h2><span class="h2-num">//</span>Conclusion</h2>
+        <p>Claude Code's extensibility architecture follows a <strong>composition pattern</strong>: skills provide atomic capabilities, subagents combine skills with isolated context for complex tasks, and plugins bundle everything into distributable packages.</p>
+        <p>The key insight is that each mechanism operates at a different level of abstraction -- <strong>skills expand prompts</strong>, <strong>subagents delegate execution</strong>, and <strong>plugins organize distribution</strong>.</p>
+        <p>For most coding workflows: start with <strong>skills</strong> for reusable instructions, add <strong>subagents</strong> when you need specialized delegation with isolated context, and wrap everything in a <strong>plugin</strong> when you need to share across teams or projects.</p>
+    </section>
+
+    <div class="cta-strip">
+        <div class="row">
+            <div>
+                <h3>Working on production AI?</h3>
+                <p>I'm Sathya — I help teams ship RAG pipelines, MCP servers, and agentic products from Ghent, Belgium.</p>
+            </div>
+            <a class="btn btn-primary" href="https://happysathya.com" target="_blank" rel="noopener">Visit happysathya.com →</a>
+        </div>
     </div>
+
+</article>
+
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <a href="/" class="brand">
+                    <span class="brand-mark">hs</span>
+                    <span class="brand-text">
+                        <span class="name">Happysathya</span>
+                        <span class="sub">TECH CONSULTING BV · BE</span>
+                    </span>
+                </a>
+                <div class="kicker" style="margin-top: 24px;">
+                    <span class="idx">//</span>
+                    <span class="line"></span>
+                    <span class="meta">END OF TRANSMISSION</span>
+                </div>
+                <h3 class="display-h3" style="margin-top: 20px; max-width: 420px;">Production AI systems, built with engineering rigor.</h3>
+                <a class="btn btn-primary" href="https://happysathya.com" target="_blank" rel="noopener" style="margin-top: 28px;">Start a conversation →</a>
+            </div>
+            <div>
+                <div class="meta footer-col-title">Connect</div>
+                <ul class="footer-list">
+                    <li><a href="https://happysathya.com" target="_blank" rel="noopener">happysathya.com</a></li>
+                    <li><a href="https://www.linkedin.com/in/happysathya/" target="_blank" rel="noopener">LinkedIn</a></li>
+                    <li><a href="https://github.com/happysathya" target="_blank" rel="noopener">GitHub</a></li>
+                    <li><a href="mailto:sathyaprakash.d@gmail.com">Email</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="meta footer-col-title">Entity</div>
+                <ul class="footer-entity">
+                    <li>Happysathya Tech Consulting BV</li>
+                    <li>VAT: BE0802610464</li>
+                    <li>Ghent, Belgium</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span class="copy">© <span id="footer-year">2026</span> · HAPPYSATHYA TECH CONSULTING BV</span>
+            <span class="version">v2.0 · MONOCHROME LIME</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const clock = document.getElementById('utc-clock');
+    if (clock) {
+        const tick = () => {
+            const d = new Date();
+            const pad = (n) => String(n).padStart(2, '0');
+            clock.textContent = `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())} UTC`;
+        };
+        tick();
+        setInterval(tick, 1000);
+    }
+    const year = document.getElementById('footer-year');
+    if (year) year.textContent = String(new Date().getFullYear());
+</script>
+
 </body>
 </html>

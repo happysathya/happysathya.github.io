@@ -12,225 +12,157 @@
   <meta property="og:url" content="https://happysathya.github.io/the-written-journey.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #0f0f12;
-      --bg-secondary: #18181d;
-      --bg-tertiary: #1f1f26;
-      --text-primary: #e8e8ed;
-      --text-secondary: #9898a6;
-      --text-muted: #6b6b7a;
-      --accent-orange: #ff7b54;
-      --accent-blue: #5a9fff;
-      --accent-purple: #b490ff;
-      --accent-green: #5ce0a8;
-      --border-color: #2a2a35;
-      --border-subtle: #232330;
+      --bg-0: #07090c;
+      --bg-1: #0c1014;
+      --bg-2: #11161c;
+      --line: rgba(255, 255, 255, 0.06);
+      --line-2: rgba(255, 255, 255, 0.12);
+      --ink-0: #f4f7fa;
+      --ink-1: #b6c2cf;
+      --ink-2: #7a8693;
+      --ink-3: #4a5563;
+      --cy-1: #d9f99d;
+      --cy-2: #a3e635;
+      --cy-3: #65a30d;
+      --accent-rgb: 163, 230, 53;
+      --cy-glow: rgba(var(--accent-rgb), 0.35);
+      --font-body: 'Urbanist', ui-sans-serif, system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+      --radius-sm: 6px;
+      --radius: 14px;
+      --radius-lg: 22px;
+      --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+      --dur-fast: 180ms;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: var(--bg-primary);
-      min-height: 100vh;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg-0);
+      color: var(--ink-0);
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.55;
       overflow-x: hidden;
-      color: var(--text-primary);
-      line-height: 1.7;
-      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 60px 40px;
-    }
+    a { color: var(--cy-2); text-decoration: none; }
 
-    nav {
-      margin-bottom: 30px;
-    }
+    .mono { font-family: var(--font-mono); letter-spacing: 0.02em; }
+    .meta { font-family: var(--font-mono); font-size: 13px; color: var(--ink-2); letter-spacing: 0.06em; text-transform: uppercase; }
+    .idx { font-family: var(--font-mono); font-size: 12px; color: var(--cy-2); letter-spacing: 0.1em; }
 
-    nav a {
-      color: var(--accent-orange);
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    @media (min-width: 768px) { .container { padding: 0 48px; } }
 
     /* Header */
-    .header {
-      text-align: center;
-      margin-bottom: 80px;
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      background: rgba(7, 9, 12, 0.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .header-row { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-mark { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, var(--cy-2), var(--cy-3)); display: grid; place-items: center; font-family: var(--font-mono); font-weight: 600; font-size: 16px; color: #001014; letter-spacing: -0.02em; }
+    .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-text .name { font-size: 15px; font-weight: 600; color: var(--ink-0); letter-spacing: -0.01em; }
+    .brand-text .sub { font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); letter-spacing: 0.08em; }
+
+    .nav-links { display: none; align-items: center; gap: 4px; }
+    @media (min-width: 900px) { .nav-links { display: flex; } }
+    .nav-link { display: inline-flex; align-items: baseline; gap: 6px; padding: 8px 14px; border-radius: 999px; color: var(--ink-1); text-decoration: none; transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
+    .nav-link:hover { color: var(--cy-1); }
+    .nav-link.active { color: var(--cy-1); background: rgba(var(--accent-rgb), 0.08); }
+    .nav-link .num { font-family: var(--font-mono); font-size: 10px; color: var(--ink-3); }
+    .nav-link.active .num { color: var(--cy-2); }
+    .nav-link .label { font-size: 14px; font-weight: 500; }
+
+    .header-right { display: none; align-items: center; gap: 12px; }
+    @media (min-width: 900px) { .header-right { display: flex; } }
+    #utc-clock { font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); }
+    .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cy-1); box-shadow: 0 0 10px var(--cy-1); animation: pulse-dot 2.2s infinite; }
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+    /* Hero */
+    .section { padding: 80px 0; position: relative; }
+    .section.first { padding-top: 140px; padding-bottom: 40px; overflow: hidden; }
+    .ambient-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .ambient-glow { position: absolute; inset: 0; background-image: radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb), 0.12), transparent 55%); }
+    .ambient-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 48px 48px; -webkit-mask-image: radial-gradient(ellipse at center top, black 30%, transparent 80%); mask-image: radial-gradient(ellipse at center top, black 30%, transparent 80%); }
+    .section .container { position: relative; }
+
+    .kicker { display: flex; align-items: center; gap: 12px; }
+    .kicker .line { width: 24px; height: 1px; background: var(--cy-2); opacity: 0.5; }
+
+    .hero-inner { text-align: center; }
+    .hero-inner .kicker { justify-content: center; }
+
+    .display-h1 {
+      font-size: clamp(36px, 5.5vw, 64px);
+      line-height: 1.02;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--ink-0);
+      margin-top: 24px;
     }
 
-    .header h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      letter-spacing: 0.3em;
-      margin-bottom: 20px;
-      background: linear-gradient(135deg, var(--accent-orange), var(--accent-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .hero-sanskrit {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--ink-2);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-top: 16px;
     }
 
-    .header .sanskrit {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      font-style: italic;
-      letter-spacing: 0.1em;
-    }
-
-    /* The river of time */
+    /* River of Time */
     .river-section {
       position: relative;
-      height: 400px;
-      margin: 60px 0;
+      height: 320px;
+      margin: 40px 0 0;
       overflow: hidden;
     }
+    .river { position: absolute; width: 100%; height: 100%; }
+    .river svg { width: 100%; height: 100%; }
+    .river-path { fill: none; stroke: url(#riverGradient); stroke-width: 2.5; stroke-linecap: round; animation: flowPath 8s ease-in-out infinite; }
+    @keyframes flowPath { 0%, 100% { stroke-dashoffset: 0; } 50% { stroke-dashoffset: 50; } }
 
-    .river {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-    }
-
-    .river svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    .river-path {
-      fill: none;
-      stroke: url(#riverGradient);
-      stroke-width: 3;
-      stroke-linecap: round;
-      animation: flowPath 8s ease-in-out infinite;
-    }
-
-    @keyframes flowPath {
-      0%, 100% { stroke-dashoffset: 0; }
-      50% { stroke-dashoffset: 50; }
-    }
-
-    /* Life moments on the river */
     .moment {
       position: absolute;
-      width: 16px;
-      height: 16px;
+      width: 12px; height: 12px;
       border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, var(--accent-orange), #c45a30);
-      box-shadow: 0 0 20px rgba(255, 123, 84, 0.5);
+      background: radial-gradient(circle at 30% 30%, var(--cy-1), var(--cy-2));
+      box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.6);
       animation: float 6s ease-in-out infinite;
     }
-
     .moment::after {
       content: attr(data-label);
       position: absolute;
-      top: 25px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 22px; left: 50%; transform: translateX(-50%);
       white-space: nowrap;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      opacity: 0.8;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
-
-    .moment:nth-child(1) { left: 10%; top: 60%; animation-delay: 0s; }
-    .moment:nth-child(2) { left: 30%; top: 45%; animation-delay: 1s; }
-    .moment:nth-child(3) { left: 50%; top: 55%; animation-delay: 2s; }
-    .moment:nth-child(4) { left: 70%; top: 40%; animation-delay: 3s; }
-    .moment:nth-child(5) { left: 90%; top: 50%; animation-delay: 4s; }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
     /* The cosmic wheel */
-    .wheel-section {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 80px 0;
-      position: relative;
-    }
-
-    .wheel-container {
-      position: relative;
-      width: 350px;
-      height: 350px;
-    }
-
-    .wheel {
-      width: 100%;
-      height: 100%;
-      border: 2px solid var(--accent-orange);
-      border-radius: 50%;
-      position: relative;
-      animation: rotate 60s linear infinite;
-    }
-
-    .wheel::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 60%;
-      height: 60%;
-      border: 1px solid rgba(255, 123, 84, 0.4);
-      border-radius: 50%;
-    }
-
-    .wheel::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 30%;
-      height: 30%;
-      border: 1px solid rgba(255, 123, 84, 0.3);
-      border-radius: 50%;
-    }
-
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .wheel-center {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 20px;
-      height: 20px;
-      background: radial-gradient(circle, var(--accent-orange), #c45a30);
-      border-radius: 50%;
-      box-shadow: 0 0 30px rgba(255, 123, 84, 0.8);
-      z-index: 10;
-    }
-
-    .spoke {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 50%;
-      height: 1px;
-      background: linear-gradient(to right, rgba(255, 123, 84, 0.8), transparent);
-      transform-origin: left center;
-    }
-
+    .wheel-section { display: flex; justify-content: center; align-items: center; padding: 80px 0; position: relative; }
+    .wheel-container { position: relative; width: 320px; height: 320px; }
+    .wheel { width: 100%; height: 100%; border: 1.5px solid var(--cy-2); border-radius: 50%; position: relative; animation: rotate 60s linear infinite; }
+    .wheel::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60%; height: 60%; border: 1px solid rgba(var(--accent-rgb), 0.4); border-radius: 50%; }
+    .wheel::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 30%; height: 30%; border: 1px solid rgba(var(--accent-rgb), 0.3); border-radius: 50%; }
+    @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 16px; height: 16px; background: radial-gradient(circle, var(--cy-1), var(--cy-2)); border-radius: 50%; box-shadow: 0 0 24px var(--cy-glow); z-index: 10; }
+    .spoke { position: absolute; top: 50%; left: 50%; width: 50%; height: 1px; background: linear-gradient(to right, rgba(var(--accent-rgb), 0.7), transparent); transform-origin: left center; }
     .spoke:nth-child(1) { transform: rotate(0deg); }
     .spoke:nth-child(2) { transform: rotate(45deg); }
     .spoke:nth-child(3) { transform: rotate(90deg); }
@@ -240,530 +172,158 @@
     .spoke:nth-child(7) { transform: rotate(270deg); }
     .spoke:nth-child(8) { transform: rotate(315deg); }
 
-    .wheel-label {
-      position: absolute;
-      font-size: 0.8rem;
-      color: var(--accent-orange);
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-    }
-
-    .wheel-label.top { top: -40px; left: 50%; transform: translateX(-50%); }
-    .wheel-label.bottom { bottom: -40px; left: 50%; transform: translateX(-50%); }
-    .wheel-label.left { left: -80px; top: 50%; transform: translateY(-50%); }
-    .wheel-label.right { right: -80px; top: 50%; transform: translateY(-50%); }
+    .wheel-label { position: absolute; font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--cy-2); text-transform: uppercase; letter-spacing: 0.18em; }
+    .wheel-label.top { top: -32px; left: 50%; transform: translateX(-50%); }
+    .wheel-label.bottom { bottom: -32px; left: 50%; transform: translateX(-50%); }
+    .wheel-label.left { left: -68px; top: 50%; transform: translateY(-50%); }
+    .wheel-label.right { right: -68px; top: 50%; transform: translateY(-50%); }
 
     /* Philosophy cards */
-    .cards-section {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-      margin: 80px 0;
-    }
+    .cards-section { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 60px 0; }
+    @media (max-width: 900px) { .cards-section { grid-template-columns: 1fr; max-width: 380px; margin-left: auto; margin-right: auto; } }
 
     .card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 40px 30px;
+      background: var(--bg-1);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
       text-align: center;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.5s ease;
+      transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
     }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-
-    .card:hover::before {
-      opacity: 1;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      border-color: var(--accent-orange);
-    }
+    .card:hover { border-color: var(--line-2); background: var(--bg-2); }
 
     .card-symbol {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      opacity: 0.9;
+      display: block;
+      font-size: 36px;
+      color: var(--cy-2);
+      margin-bottom: 18px;
+      line-height: 1;
     }
-
-    .card h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--accent-orange);
-      margin-bottom: 15px;
+    .card .card-num {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-3);
       letter-spacing: 0.1em;
+      margin-bottom: 8px;
     }
-
-    .card p {
-      font-size: 0.9rem;
-      line-height: 1.8;
-      color: var(--text-secondary);
-    }
-
-    /* Timeline section */
-    .timeline-section {
-      padding: 60px 0;
-      position: relative;
-    }
-
-    .timeline-title {
-      text-align: center;
-      font-size: 1.5rem;
-      color: var(--text-primary);
-      margin-bottom: 60px;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-    }
-
-    .timeline {
-      position: relative;
-      padding: 40px 0;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .timeline::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 1px;
-      background: linear-gradient(to bottom, transparent, var(--accent-orange), var(--accent-orange), transparent);
-    }
-
-    .timeline-item {
-      display: flex;
-      margin: 50px 0;
-      position: relative;
-      width: 100%;
-    }
-
-    .timeline-item:nth-child(odd) {
-      justify-content: flex-start;
-    }
-
-    .timeline-item:nth-child(even) {
-      justify-content: flex-end;
-    }
-
-    .timeline-content {
-      width: 42%;
-      padding: 25px;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-    }
-
-    .timeline-item:nth-child(odd) .timeline-content {
-      text-align: right;
-      margin-right: 8%;
-    }
-
-    .timeline-item:nth-child(even) .timeline-content {
-      text-align: left;
-      margin-left: 8%;
-    }
-
-    .timeline-dot {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 12px;
-      height: 12px;
-      background: var(--accent-orange);
-      border-radius: 50%;
-      box-shadow: 0 0 15px rgba(255, 123, 84, 0.5);
-      z-index: 2;
-    }
-
-    .timeline-content h4 {
-      color: var(--accent-orange);
-      font-weight: 600;
-      margin-bottom: 10px;
-      font-size: 1rem;
-    }
-
-    .timeline-content p {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      line-height: 1.7;
-    }
+    .card h3 { font-size: 19px; font-weight: 600; color: var(--ink-0); margin-bottom: 12px; letter-spacing: -0.01em; }
+    .card p { font-size: 15px; line-height: 1.65; color: var(--ink-1); }
 
     /* Quote section */
-    .quote-section {
-      text-align: center;
-      padding: 100px 60px;
-      position: relative;
-      margin: 60px 0;
-    }
-
-    .quote-section::before,
-    .quote-section::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
-    }
-
+    .quote-section { text-align: center; padding: 80px 24px; position: relative; margin: 40px 0; }
+    .quote-section::before, .quote-section::after { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 80px; height: 1px; background: linear-gradient(90deg, transparent, var(--cy-2), transparent); }
     .quote-section::before { top: 0; }
     .quote-section::after { bottom: 0; }
+    .quote { font-size: clamp(20px, 2.6vw, 28px); font-style: italic; color: var(--ink-0); line-height: 1.5; max-width: 700px; margin: 0 auto 20px; font-weight: 400; text-wrap: balance; }
+    .quote-source { font-family: var(--font-mono); color: var(--ink-2); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
 
-    .quote {
-      font-size: 1.4rem;
-      font-style: italic;
-      color: var(--text-primary);
-      line-height: 2;
-      max-width: 700px;
-      margin: 0 auto 30px;
-    }
+    /* Particles */
+    .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden; }
+    .particle { position: absolute; width: 2px; height: 2px; background: rgba(var(--accent-rgb), 0.35); border-radius: 50%; animation: drift 22s linear infinite; }
+    @keyframes drift { 0% { transform: translateY(100vh) translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100vh) translateX(100px); opacity: 0; } }
 
-    .quote-source {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      letter-spacing: 0.1em;
-    }
+    /* Detours */
+    .section-title-block { text-align: center; }
+    .section-title-block .display-h2 { font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; color: var(--ink-0); margin-top: 16px; text-wrap: balance; }
+    .section-title-block .lede-sub { color: var(--ink-2); font-size: 16px; font-style: italic; margin-top: 12px; max-width: 560px; margin-left: auto; margin-right: auto; }
 
-    /* Flowing particles */
-    .particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    .particle {
-      position: absolute;
-      width: 3px;
-      height: 3px;
-      background: rgba(255, 123, 84, 0.3);
-      border-radius: 50%;
-      animation: drift 20s linear infinite;
-    }
-
-    @keyframes drift {
-      0% {
-        transform: translateY(100vh) translateX(0);
-        opacity: 0;
-      }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% {
-        transform: translateY(-100vh) translateX(100px);
-        opacity: 0;
-      }
-    }
-
-    /* Detours Section */
-    .detours-section {
-      padding: 80px 0;
-      margin: 40px 0;
-    }
-
-    .detours-title {
-      text-align: center;
-      font-size: 1.5rem;
-      color: var(--text-primary);
-      margin-bottom: 15px;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-    }
-
-    .detours-subtitle {
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      font-style: italic;
-      margin-bottom: 50px;
-    }
-
-    .path-visual {
-      margin: 50px 0;
-      padding: 20px;
-    }
-
-    .path-visual svg {
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-      display: block;
-    }
-
-    .main-path {
-      animation: dashFlow 3s linear infinite;
-    }
-
-    @keyframes dashFlow {
-      to {
-        stroke-dashoffset: -24;
-      }
-    }
-
-    .detour-path {
-      stroke-dasharray: 4,3;
-      animation: detourPulse 4s ease-in-out infinite;
-    }
-
+    .path-visual { margin: 48px 0; padding: 16px; }
+    .path-visual svg { width: 100%; max-width: 900px; margin: 0 auto; display: block; }
+    .main-path { animation: dashFlow 3s linear infinite; }
+    @keyframes dashFlow { to { stroke-dashoffset: -24; } }
+    .detour-path { stroke-dasharray: 4,3; animation: detourPulse 4s ease-in-out infinite; }
     .detour-1 { animation-delay: 0s; }
     .detour-2 { animation-delay: 1.3s; }
     .detour-3 { animation-delay: 2.6s; }
+    @keyframes detourPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.9; } }
+    .detour-label { fill: var(--ink-2); font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; text-anchor: middle; }
+    .journey-point { animation: pointGlow 3s ease-in-out infinite; }
+    @keyframes pointGlow { 0%, 100% { filter: drop-shadow(0 0 3px rgba(var(--accent-rgb), 0.6)); } 50% { filter: drop-shadow(0 0 8px rgba(var(--accent-rgb), 0.95)); } }
+    .return-arrow { animation: arrowPulse 2s ease-in-out infinite; }
+    @keyframes arrowPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-    @keyframes detourPulse {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 0.8; }
+    .detour-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 48px 0; }
+    @media (max-width: 900px) { .detour-cards { grid-template-columns: 1fr; max-width: 380px; margin-left: auto; margin-right: auto; } }
+
+    .detour-card { background: var(--bg-1); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 32px 24px; text-align: center; transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
+    .detour-card:hover { border-color: var(--line-2); background: var(--bg-2); }
+    .detour-icon { font-size: 26px; color: var(--cy-1); margin-bottom: 14px; line-height: 1; }
+    .detour-card .card-num { display: block; font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.1em; margin-bottom: 8px; }
+    .detour-card h4 { font-family: var(--font-mono); font-size: 12px; color: var(--cy-2); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; font-weight: 500; }
+    .detour-card p { font-size: 15px; line-height: 1.7; color: var(--ink-1); }
+
+    .detour-wisdom { text-align: center; padding: 48px 24px; margin: 32px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .wisdom-main { font-size: clamp(22px, 2.6vw, 28px); color: var(--ink-0); margin-bottom: 14px; font-weight: 600; text-wrap: balance; letter-spacing: -0.01em; }
+    .wisdom-sub { font-size: 17px; color: var(--ink-1); max-width: 640px; margin: 0 auto; line-height: 1.7; }
+
+    .return-section { margin-top: 56px; padding: 40px 24px; background: linear-gradient(180deg, transparent, rgba(var(--accent-rgb), 0.04), transparent); border-radius: var(--radius-lg); }
+    .return-title { text-align: center; font-family: var(--font-mono); color: var(--cy-2); font-size: 13px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 36px; }
+    .return-stages { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+    .return-stage { text-align: center; max-width: 180px; }
+    .stage-marker { display: inline-grid; place-items: center; width: 36px; height: 36px; border: 1px solid rgba(var(--accent-rgb), 0.4); border-radius: 50%; color: var(--cy-2); font-size: 16px; margin-bottom: 12px; font-weight: 600; }
+    .return-stage p { color: var(--ink-1); font-size: 14px; line-height: 1.55; }
+
+    /* Timeline */
+    .timeline-section { padding: 64px 0; }
+    .timeline-section .meta-title { text-align: center; font-family: var(--font-mono); color: var(--cy-2); font-size: 13px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 56px; }
+    .timeline { position: relative; padding: 24px 0; max-width: 880px; margin: 0 auto; }
+    .timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); width: 1px; background: linear-gradient(to bottom, transparent, var(--cy-2), var(--cy-2), transparent); }
+    .timeline-item { display: flex; margin: 40px 0; position: relative; width: 100%; }
+    .timeline-item:nth-child(odd) { justify-content: flex-start; }
+    .timeline-item:nth-child(even) { justify-content: flex-end; }
+    .timeline-content { width: 42%; padding: 22px 24px; background: var(--bg-1); border: 1px solid var(--line); border-radius: var(--radius); }
+    .timeline-item:nth-child(odd) .timeline-content { text-align: right; margin-right: 8%; }
+    .timeline-item:nth-child(even) .timeline-content { text-align: left; margin-left: 8%; }
+    .timeline-dot { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: var(--cy-2); border-radius: 50%; box-shadow: 0 0 12px var(--cy-glow); z-index: 2; }
+    .timeline-content h4 { font-family: var(--font-mono); color: var(--cy-2); font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+    .timeline-content p { color: var(--ink-1); font-size: 15px; line-height: 1.6; }
+
+    @media (max-width: 900px) {
+      .timeline { padding-left: 36px; }
+      .timeline::before { left: 18px; transform: none; }
+      .timeline-item, .timeline-item:nth-child(odd), .timeline-item:nth-child(even) { justify-content: flex-start; }
+      .timeline-content, .timeline-item:nth-child(odd) .timeline-content, .timeline-item:nth-child(even) .timeline-content { width: 100%; margin-left: 28px; margin-right: 0; text-align: left; }
+      .timeline-dot { left: 18px; }
+      .wheel-container { width: 260px; height: 260px; }
+      .return-stages { flex-direction: column; align-items: center; }
     }
 
-    .detour-label {
-      fill: var(--text-muted);
-      font-size: 14px;
-      font-style: italic;
-      text-anchor: middle;
-    }
+    /* CTA strip */
+    .cta-strip { position: relative; overflow: hidden; border-radius: var(--radius-lg); padding: 48px 32px; border: 1px solid var(--line-2); background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.08) 0%, transparent 100%); margin-top: 56px; }
+    @media (min-width: 768px) { .cta-strip { padding: 64px 48px; } }
+    .cta-strip::before { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 40px 40px; -webkit-mask-image: radial-gradient(ellipse at 80% 50%, black 20%, transparent 75%); mask-image: radial-gradient(ellipse at 80% 50%, black 20%, transparent 75%); }
+    .cta-strip .row { position: relative; display: flex; flex-direction: column; gap: 32px; }
+    @media (min-width: 768px) { .cta-strip .row { flex-direction: row; align-items: center; justify-content: space-between; } }
+    .cta-strip h3 { font-size: clamp(22px, 2.6vw, 28px); line-height: 1.2; font-weight: 600; letter-spacing: -0.01em; color: var(--ink-0); max-width: 640px; }
+    .cta-strip p { margin-top: 12px; max-width: 520px; color: var(--ink-1); font-size: 17px; }
 
-    .journey-point {
-      animation: pointGlow 3s ease-in-out infinite;
-    }
-
-    @keyframes pointGlow {
-      0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 123, 84, 0.5)); }
-      50% { filter: drop-shadow(0 0 8px rgba(255, 123, 84, 0.8)); }
-    }
-
-    .return-arrow {
-      animation: arrowPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes arrowPulse {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
-    }
-
-    .detour-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 25px;
-      margin: 60px 0;
-    }
-
-    .detour-card {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 35px 25px;
-      text-align: center;
-      transition: all 0.4s ease;
-    }
-
-    .detour-card:hover {
-      border-color: var(--accent-purple);
-      transform: translateY(-3px);
-    }
-
-    .detour-icon {
-      font-size: 2rem;
-      color: var(--accent-purple);
-      margin-bottom: 15px;
-      opacity: 0.8;
-    }
-
-    .detour-card h4 {
-      color: var(--accent-purple);
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      letter-spacing: 0.1em;
-    }
-
-    .detour-card p {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      line-height: 1.8;
-    }
-
-    .detour-wisdom {
-      text-align: center;
-      padding: 50px 40px;
-      margin: 40px 0;
-      border-top: 1px solid var(--border-subtle);
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .wisdom-main {
-      font-size: 1.3rem;
-      color: var(--accent-orange);
-      margin-bottom: 15px;
-      font-weight: 700;
-    }
-
-    .wisdom-sub {
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.8;
-    }
-
-    .return-section {
-      margin-top: 60px;
-      padding: 40px;
-      background: linear-gradient(180deg, transparent, rgba(255, 123, 84, 0.03), transparent);
-    }
-
-    .return-title {
-      text-align: center;
-      color: var(--text-primary);
-      font-size: 1.2rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      margin-bottom: 40px;
-    }
-
-    .return-stages {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      flex-wrap: wrap;
-    }
-
-    .return-stage {
-      text-align: center;
-      max-width: 180px;
-    }
-
-    .stage-marker {
-      display: inline-block;
-      width: 36px;
-      height: 36px;
-      line-height: 36px;
-      border: 1px solid rgba(255, 123, 84, 0.4);
-      border-radius: 50%;
-      color: var(--accent-orange);
-      font-size: 1rem;
-      margin-bottom: 12px;
-    }
-
-    .return-stage p {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      line-height: 1.6;
-    }
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 999px; font: 500 15px/1 var(--font-body); letter-spacing: 0.01em; border: 1px solid var(--line-2); color: var(--ink-0); background: transparent; cursor: pointer; text-decoration: none; transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); }
+    .btn:hover { background: rgba(255, 255, 255, 0.04); border-color: var(--ink-2); }
+    .btn-primary { border-color: transparent; background: var(--cy-2); color: #001014; box-shadow: 0 0 0 0 var(--cy-glow); }
+    .btn-primary:hover { background: var(--cy-1); box-shadow: 0 0 40px -6px var(--cy-glow); }
 
     /* Footer */
-    footer {
-      margin-top: 80px;
-      padding-top: 30px;
-      border-top: 1px solid var(--border-subtle);
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
+    footer { margin-top: 100px; border-top: 1px solid var(--line); background: var(--bg-0); }
+    .footer-grid { padding: 64px 0 40px; display: grid; gap: 48px; grid-template-columns: 1fr; }
+    @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr; } }
+    .footer-col-title { margin-bottom: 20px; color: var(--ink-3); }
+    .footer-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-list a { color: var(--ink-1); font-size: 14px; transition: color var(--dur-fast) var(--ease); }
+    .footer-list a:hover { color: var(--cy-1); }
+    .footer-entity { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-entity li { font-family: var(--font-mono); font-size: 12px; color: var(--ink-2); }
+    .footer-bottom { padding: 24px 0 48px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+    @media (min-width: 640px) { .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; } }
+    .footer-bottom .copy, .footer-bottom .version { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.06em; text-transform: uppercase; }
 
-    footer p {
-      margin-bottom: 8px;
-      font-size: 0.85rem;
-      line-height: 2;
-    }
+    .display-h3 { font-size: 22px; font-weight: 600; color: var(--ink-0); letter-spacing: -0.01em; }
 
-    footer a {
-      text-decoration: none;
-    }
-
-    /* Responsive */
-    @media (max-width: 900px) {
-      .cards-section {
-        grid-template-columns: 1fr;
-        max-width: 400px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .detour-cards {
-        grid-template-columns: 1fr;
-        max-width: 350px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .return-stages {
-        flex-direction: column;
-        align-items: center;
-        gap: 30px;
-      }
-
-      .timeline {
-        padding-left: 40px;
-      }
-
-      .timeline::before {
-        left: 20px;
-        transform: none;
-      }
-
-      .timeline-item,
-      .timeline-item:nth-child(odd),
-      .timeline-item:nth-child(even) {
-        justify-content: flex-start;
-      }
-
-      .timeline-content,
-      .timeline-item:nth-child(odd) .timeline-content,
-      .timeline-item:nth-child(even) .timeline-content {
-        width: 100%;
-        margin-left: 30px;
-        margin-right: 0;
-        text-align: left;
-      }
-
-      .timeline-dot {
-        left: 20px;
-        transform: translate(-50%, -50%);
-      }
-
-      .wheel-container {
-        width: 280px;
-        height: 280px;
-      }
-
-      .path-visual svg {
-        min-height: 200px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 40px 24px;
-      }
-
-      .header h1 {
-        font-size: 1.8rem;
-      }
-    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
   </style>
 </head>
 <body>
-  <!-- Background particles -->
   <div class="particles">
     <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
     <div class="particle" style="left: 20%; animation-delay: 3s;"></div>
@@ -774,17 +334,48 @@
     <div class="particle" style="left: 90%; animation-delay: 10s;"></div>
   </div>
 
+  <header class="site-header">
+    <div class="container">
+      <div class="header-row">
+        <a href="/" class="brand" aria-label="Happysathya home">
+          <span class="brand-mark">hs</span>
+          <span class="brand-text">
+            <span class="name">Happysathya</span>
+            <span class="sub">BLOG · BE</span>
+          </span>
+        </a>
+        <nav class="nav-links">
+          <a href="index.html" class="nav-link"><span class="num">00</span><span class="label">Blog</span></a>
+          <a href="https://happysathya.com" target="_blank" rel="noopener" class="nav-link"><span class="num">01</span><span class="label">happysathya.com ↗</span></a>
+          <a href="https://www.linkedin.com/in/happysathya/" target="_blank" rel="noopener" class="nav-link"><span class="num">02</span><span class="label">LinkedIn ↗</span></a>
+        </nav>
+        <div class="header-right">
+          <span id="utc-clock">--:--:-- UTC</span>
+          <span aria-hidden="true" class="pulse-dot"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section first">
+    <div class="ambient-bg" aria-hidden="true">
+      <div class="ambient-glow"></div>
+      <div class="ambient-grid"></div>
+    </div>
+    <div class="container">
+      <div class="hero-inner">
+        <div class="kicker">
+          <span class="idx">b02</span>
+          <span class="line"></span>
+          <span class="meta">PHILOSOPHY · MAR 2026</span>
+        </div>
+        <h1 class="display-h1">விதி யாத்திரை</h1>
+        <p class="hero-sanskrit">The Written Journey</p>
+      </div>
+    </div>
+  </section>
+
   <div class="container">
-
-    <nav>
-      <a href="index.html">&larr; Blog</a>
-    </nav>
-
-    <!-- Header -->
-    <header class="header">
-      <h1>விதி யாத்திரை</h1>
-      <p class="sanskrit">The Written Journey</p>
-    </header>
 
     <!-- River of Time -->
     <section class="river-section">
@@ -792,18 +383,13 @@
         <svg viewBox="0 0 1200 400" preserveAspectRatio="none">
           <defs>
             <linearGradient id="riverGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color:rgba(255,123,84,0.1)" />
-              <stop offset="50%" style="stop-color:rgba(255,123,84,0.6)" />
-              <stop offset="100%" style="stop-color:rgba(255,123,84,0.1)" />
+              <stop offset="0%" style="stop-color:rgba(163,230,53,0.1)" />
+              <stop offset="50%" style="stop-color:rgba(163,230,53,0.7)" />
+              <stop offset="100%" style="stop-color:rgba(163,230,53,0.1)" />
             </linearGradient>
           </defs>
-          <path class="river-path"
-                d="M0,200 Q150,150 300,180 T600,200 T900,170 T1200,200"
-                stroke-dasharray="10,5"/>
-          <path class="river-path"
-                d="M0,220 Q150,270 300,240 T600,220 T900,250 T1200,220"
-                stroke-dasharray="10,5"
-                style="opacity: 0.5"/>
+          <path class="river-path" d="M0,200 Q150,150 300,180 T600,200 T900,170 T1200,200" stroke-dasharray="10,5"/>
+          <path class="river-path" d="M0,220 Q150,270 300,240 T600,220 T900,250 T1200,220" stroke-dasharray="10,5" style="opacity: 0.5"/>
         </svg>
       </div>
       <div class="moment" data-label="birth" style="left: 8%; top: 48%;"></div>
@@ -814,21 +400,31 @@
     </section>
 
     <!-- Philosophy Cards -->
-    <section class="cards-section">
-      <div class="card">
-        <div class="card-symbol">॥</div>
-        <h3>Prarabdha</h3>
-        <p>The karma already set in motion. The fruit that must ripen in this lifetime, written before the first breath.</p>
+    <section style="margin: 60px 0;">
+      <div class="kicker">
+        <span class="idx">01</span>
+        <span class="line"></span>
+        <span class="meta">FOUNDATIONS</span>
       </div>
-      <div class="card">
-        <div class="card-symbol">ஓம்</div>
-        <h3>Witness</h3>
-        <p>Not to choose, but to understand why the choices unfold. The soul watches its own story being told.</p>
-      </div>
-      <div class="card">
-        <div class="card-symbol">∞</div>
-        <h3>Time</h3>
-        <p>The river that carries all moments. We do not swim against it. We learn to float, to see, to be present.</p>
+      <div class="cards-section">
+        <div class="card">
+          <span class="card-num">01 / 03</span>
+          <span class="card-symbol">॥</span>
+          <h3>Prarabdha</h3>
+          <p>The karma already set in motion. The fruit that must ripen in this lifetime, written before the first breath.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">02 / 03</span>
+          <span class="card-symbol">ஓம்</span>
+          <h3>Witness</h3>
+          <p>Not to choose, but to understand why the choices unfold. The soul watches its own story being told.</p>
+        </div>
+        <div class="card">
+          <span class="card-num">03 / 03</span>
+          <span class="card-symbol">∞</span>
+          <h3>Time</h3>
+          <p>The river that carries all moments. We do not swim against it. We learn to float, to see, to be present.</p>
+        </div>
       </div>
     </section>
 
@@ -855,99 +451,75 @@
 
     <!-- Quote -->
     <section class="quote-section">
-      <p class="quote">
-        "You have the right to work, but never to the fruit of work.
-        You should never engage in action for the sake of reward."
-      </p>
+      <p class="quote">"You have the right to work, but never to the fruit of work. You should never engage in action for the sake of reward."</p>
       <p class="quote-source">— Bhagavad Gita 2.47</p>
     </section>
 
     <!-- Detours Section -->
-    <section class="detours-section">
-      <h2 class="detours-title">The Detours</h2>
-      <p class="detours-subtitle">When we wander from the path, we still arrive — only more weathered</p>
+    <section style="padding: 64px 0;">
+      <div class="section-title-block">
+        <div class="kicker" style="justify-content: center;">
+          <span class="idx">02</span>
+          <span class="line"></span>
+          <span class="meta">DETOURS</span>
+        </div>
+        <h2 class="display-h2">When we wander from the path, we still arrive — only more weathered.</h2>
+        <p class="lede-sub">The detours do not change the destination. They only change how we arrive.</p>
+      </div>
 
       <div class="path-visual">
         <svg viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet">
           <defs>
             <linearGradient id="mainPathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color:#ff7b54" />
-              <stop offset="100%" style="stop-color:#ff7b54" />
+              <stop offset="0%" style="stop-color:#a3e635" />
+              <stop offset="100%" style="stop-color:#a3e635" />
             </linearGradient>
             <linearGradient id="detourGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color:#b490ff" />
-              <stop offset="50%" style="stop-color:#7a5cc8" />
-              <stop offset="100%" style="stop-color:#b490ff" />
+              <stop offset="0%" style="stop-color:#65a30d" />
+              <stop offset="50%" style="stop-color:#65a30d" />
+              <stop offset="100%" style="stop-color:#65a30d" />
             </linearGradient>
           </defs>
 
-          <!-- The written path -->
-          <path class="main-path"
-                d="M50,150 L950,150"
-                stroke="url(#mainPathGradient)"
-                stroke-width="3"
-                fill="none"
-                stroke-dasharray="8,4"
-                opacity="0.4"/>
+          <path class="main-path" d="M50,150 L950,150" stroke="url(#mainPathGradient)" stroke-width="2.5" fill="none" stroke-dasharray="8,4" opacity="0.55"/>
 
-          <!-- Detour 1: Addiction loop -->
-          <path class="detour-path detour-1"
-                d="M200,150 Q200,50 300,50 Q400,50 400,100 Q400,150 350,150 Q300,150 300,100 Q300,50 350,50 Q420,50 420,150"
-                stroke="url(#detourGradient)"
-                stroke-width="2"
-                fill="none"
-                opacity="0.7"/>
+          <path class="detour-path detour-1" d="M200,150 Q200,50 300,50 Q400,50 400,100 Q400,150 350,150 Q300,150 300,100 Q300,50 350,50 Q420,50 420,150" stroke="url(#detourGradient)" stroke-width="1.8" fill="none" opacity="0.75"/>
+          <path class="detour-path detour-2" d="M500,150 Q520,250 600,280 Q680,280 720,200 Q750,150 780,150" stroke="url(#detourGradient)" stroke-width="1.8" fill="none" opacity="0.75"/>
+          <path class="detour-path detour-3" d="M850,150 Q830,100 800,120 Q770,140 790,170 Q810,200 850,180 Q880,160 900,150" stroke="url(#detourGradient)" stroke-width="1.8" fill="none" opacity="0.75"/>
 
-          <!-- Detour 2: Separation descent -->
-          <path class="detour-path detour-2"
-                d="M500,150 Q520,250 600,280 Q680,280 720,200 Q750,150 780,150"
-                stroke="url(#detourGradient)"
-                stroke-width="2"
-                fill="none"
-                opacity="0.7"/>
+          <circle cx="50" cy="150" r="7" fill="#a3e635" class="journey-point"/>
+          <circle cx="200" cy="150" r="5" fill="#a3e635" class="journey-point"/>
+          <circle cx="420" cy="150" r="5" fill="#a3e635" class="journey-point"/>
+          <circle cx="500" cy="150" r="5" fill="#a3e635" class="journey-point"/>
+          <circle cx="780" cy="150" r="5" fill="#a3e635" class="journey-point"/>
+          <circle cx="850" cy="150" r="5" fill="#a3e635" class="journey-point"/>
+          <circle cx="950" cy="150" r="7" fill="#a3e635" class="journey-point"/>
 
-          <!-- Detour 3: Depression wandering -->
-          <path class="detour-path detour-3"
-                d="M850,150 Q830,100 800,120 Q770,140 790,170 Q810,200 850,180 Q880,160 900,150"
-                stroke="url(#detourGradient)"
-                stroke-width="2"
-                fill="none"
-                opacity="0.7"/>
-
-          <!-- Journey points -->
-          <circle cx="50" cy="150" r="8" fill="#ff7b54" class="journey-point"/>
-          <circle cx="200" cy="150" r="6" fill="#ff7b54" class="journey-point"/>
-          <circle cx="420" cy="150" r="6" fill="#ff7b54" class="journey-point"/>
-          <circle cx="500" cy="150" r="6" fill="#ff7b54" class="journey-point"/>
-          <circle cx="780" cy="150" r="6" fill="#ff7b54" class="journey-point"/>
-          <circle cx="850" cy="150" r="6" fill="#ff7b54" class="journey-point"/>
-          <circle cx="950" cy="150" r="8" fill="#ff7b54" class="journey-point"/>
-
-          <!-- Detour labels -->
           <text x="310" y="30" class="detour-label">addiction</text>
           <text x="600" y="270" class="detour-label">separation</text>
           <text x="820" y="200" class="detour-label">depression</text>
 
-          <!-- Return arrows -->
-          <path d="M415,140 L420,150 L415,160" stroke="#ff7b54" stroke-width="1.5" fill="none" class="return-arrow"/>
-          <path d="M775,140 L780,150 L775,160" stroke="#ff7b54" stroke-width="1.5" fill="none" class="return-arrow"/>
-          <path d="M895,140 L900,150 L895,160" stroke="#ff7b54" stroke-width="1.5" fill="none" class="return-arrow"/>
+          <path d="M415,140 L420,150 L415,160" stroke="#a3e635" stroke-width="1.5" fill="none" class="return-arrow"/>
+          <path d="M775,140 L780,150 L775,160" stroke="#a3e635" stroke-width="1.5" fill="none" class="return-arrow"/>
+          <path d="M895,140 L900,150 L895,160" stroke="#a3e635" stroke-width="1.5" fill="none" class="return-arrow"/>
         </svg>
       </div>
 
-      <!-- Detour cards -->
       <div class="detour-cards">
         <div class="detour-card">
+          <span class="card-num">01 / 03</span>
           <div class="detour-icon">↺</div>
           <h4>The Loop</h4>
           <p>Addiction, obsession, the circling back to what harms us. We think we're choosing escape, but we're just delaying arrival. The path waits.</p>
         </div>
         <div class="detour-card">
+          <span class="card-num">02 / 03</span>
           <div class="detour-icon">↓</div>
           <h4>The Descent</h4>
           <p>Separation, loss, the fall into darkness. We descend not by choice but by gravity. Yet even the lowest point bends back toward the path.</p>
         </div>
         <div class="detour-card">
+          <span class="card-num">03 / 03</span>
           <div class="detour-icon">〰</div>
           <h4>The Wandering</h4>
           <p>Depression, confusion, moving without direction. Small circles in the fog. But even aimless steps eventually find their way home.</p>
@@ -959,33 +531,25 @@
         <p class="wisdom-sub">They only change how bruised we are when we arrive, and how deeply we understand the path we were always meant to walk.</p>
       </div>
 
-      <!-- The return visualization -->
       <div class="return-section">
-        <h3 class="return-title">The Return</h3>
+        <h3 class="return-title">// The Return</h3>
         <div class="return-stages">
-          <div class="return-stage">
-            <span class="stage-marker">१</span>
-            <p>Recognition — seeing that we have wandered</p>
-          </div>
-          <div class="return-stage">
-            <span class="stage-marker">२</span>
-            <p>Exhaustion — the detour taking all we have</p>
-          </div>
-          <div class="return-stage">
-            <span class="stage-marker">३</span>
-            <p>Surrender — releasing the illusion of control</p>
-          </div>
-          <div class="return-stage">
-            <span class="stage-marker">४</span>
-            <p>Return — finding the path was always beneath our feet</p>
-          </div>
+          <div class="return-stage"><span class="stage-marker">१</span><p>Recognition — seeing that we have wandered</p></div>
+          <div class="return-stage"><span class="stage-marker">२</span><p>Exhaustion — the detour taking all we have</p></div>
+          <div class="return-stage"><span class="stage-marker">३</span><p>Surrender — releasing the illusion of control</p></div>
+          <div class="return-stage"><span class="stage-marker">४</span><p>Return — finding the path was always beneath our feet</p></div>
         </div>
       </div>
     </section>
 
-    <!-- Timeline of Understanding -->
+    <!-- Timeline -->
     <section class="timeline-section">
-      <h2 class="timeline-title">The Unfolding</h2>
+      <div class="kicker" style="justify-content: center;">
+        <span class="idx">03</span>
+        <span class="line"></span>
+        <span class="meta">THE UNFOLDING</span>
+      </div>
+      <h2 class="meta-title" style="margin-top: 24px;">Four stages of the lived journey</h2>
       <div class="timeline">
         <div class="timeline-item">
           <div class="timeline-content">
@@ -1018,20 +582,75 @@
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-      <p style="font-style: italic;">
-        Live the life and experience what unfolds before you.<br>
-        The destination was always certain.<br>
-        Only the walking is ours.
-      </p>
-      <p style="margin-top: 30px;">
-        <a href="index.html" style="color: var(--accent-orange);">&larr; Blog</a>
-      </p>
-      <p>
-        Created by <a href="https://happysathya.com" target="_blank" style="color: var(--accent-blue);">Sathya</a> &bull; <a href="https://www.linkedin.com/in/happysathya/" target="_blank" style="color: var(--accent-blue);">LinkedIn</a>
-      </p>
-    </footer>
+    <div class="cta-strip">
+      <div class="row">
+        <div>
+          <h3>More from the field notes.</h3>
+          <p>Live the life and experience what unfolds before you. The destination was always certain. Only the walking is ours.</p>
+        </div>
+        <a class="btn btn-primary" href="index.html">← Back to blog</a>
+      </div>
+    </div>
+
   </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="/" class="brand">
+            <span class="brand-mark">hs</span>
+            <span class="brand-text">
+              <span class="name">Happysathya</span>
+              <span class="sub">TECH CONSULTING BV · BE</span>
+            </span>
+          </a>
+          <div class="kicker" style="margin-top: 24px;">
+            <span class="idx">//</span>
+            <span class="line"></span>
+            <span class="meta">END OF TRANSMISSION</span>
+          </div>
+          <h3 class="display-h3" style="margin-top: 20px; max-width: 420px;">Production AI systems, built with engineering rigor.</h3>
+          <a class="btn btn-primary" href="https://happysathya.com" target="_blank" rel="noopener" style="margin-top: 28px;">Start a conversation →</a>
+        </div>
+        <div>
+          <div class="meta footer-col-title">Connect</div>
+          <ul class="footer-list">
+            <li><a href="https://happysathya.com" target="_blank" rel="noopener">happysathya.com</a></li>
+            <li><a href="https://www.linkedin.com/in/happysathya/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://github.com/happysathya" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="mailto:sathyaprakash.d@gmail.com">Email</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="meta footer-col-title">Entity</div>
+          <ul class="footer-entity">
+            <li>Happysathya Tech Consulting BV</li>
+            <li>VAT: BE0802610464</li>
+            <li>Ghent, Belgium</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="copy">© <span id="footer-year">2026</span> · HAPPYSATHYA TECH CONSULTING BV</span>
+        <span class="version">v2.0 · MONOCHROME LIME</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const clock = document.getElementById('utc-clock');
+    if (clock) {
+      const tick = () => {
+        const d = new Date();
+        const pad = (n) => String(n).padStart(2, '0');
+        clock.textContent = `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())} UTC`;
+      };
+      tick();
+      setInterval(tick, 1000);
+    }
+    const year = document.getElementById('footer-year');
+    if (year) year.textContent = String(new Date().getFullYear());
+  </script>
 </body>
 </html>
