@@ -6,6 +6,7 @@
     <title>Claude Code Extensibility Guide: Plugins, Subagents & Skills</title>
     <meta name="description" content="Plugins bundle extensions into shareable packages, Subagents provide specialized AI assistants with isolated context, and Skills inject task-specific instructions on demand.">
     <link rel="canonical" href="https://happysathya.github.io/claude-code-extensibility-guide.html">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Claude Code Extensibility Guide: Plugins, Subagents & Skills">
     <meta property="og:description" content="Plugins bundle extensions into shareable packages, Subagents provide specialized AI assistants with isolated context, and Skills inject task-specific instructions on demand.">
@@ -65,7 +66,7 @@
         .site-header { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); background: rgba(7, 9, 12, 0.72); border-bottom: 1px solid var(--line); }
         .header-row { display: flex; align-items: center; justify-content: space-between; height: 72px; }
         .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .brand-mark { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, var(--cy-2), var(--cy-3)); display: grid; place-items: center; font-family: var(--font-mono); font-weight: 600; font-size: 16px; color: #001014; letter-spacing: -0.02em; }
+        .brand-mark { height: 36px; width: auto; display: block; filter: saturate(1.1); }
         .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
         .brand-text .name { font-size: 15px; font-weight: 600; color: var(--ink-0); letter-spacing: -0.01em; }
         .brand-text .sub { font-family: var(--font-mono); font-size: 11px; color: var(--ink-2); letter-spacing: 0.08em; }
@@ -552,7 +553,7 @@
     <div class="container">
         <div class="header-row">
             <a href="/" class="brand" aria-label="Happysathya home">
-                <span class="brand-mark">hs</span>
+                <img src="assets/logo.png" alt="" class="brand-mark">
                 <span class="brand-text">
                     <span class="name">Happysathya</span>
                     <span class="sub">BLOG · BE</span>
@@ -1338,7 +1339,7 @@ export default router;
         <div class="footer-grid">
             <div>
                 <a href="/" class="brand">
-                    <span class="brand-mark">hs</span>
+                    <img src="assets/logo.png" alt="" class="brand-mark">
                     <span class="brand-text">
                         <span class="name">Happysathya</span>
                         <span class="sub">TECH CONSULTING BV · BE</span>
